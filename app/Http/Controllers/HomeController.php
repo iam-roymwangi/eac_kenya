@@ -11,4 +11,9 @@ class HomeController extends Controller
     {
         return Inertia::render('Projects');
     }
+
+    public function loadAboutPage()
+    {
+        return Inertia::render('About');
+    }
 }

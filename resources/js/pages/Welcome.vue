@@ -1,508 +1,258 @@
 <template>
-    <div class="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100">
-      <!-- Navigation -->
-      <nav class="fixed w-full top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-slate-200">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <div class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center">
-              <span class="text-white font-bold text-lg">E</span>
-            </div>
-            <span class="text-xl font-bold text-slate-900">EAC</span>
+  <div class="min-h-screen bg-slate-50 font-sans selection:bg-emerald-200 selection:text-emerald-900">
+    <div 
+      class="fixed top-0 left-0 h-1 bg-emerald-500 z-[110] transition-all duration-150" 
+      :style="{ width: scrollProgress + '%' }"
+    ></div>
+
+    <nav 
+      class="fixed w-full top-0 z-[100] transition-all duration-500"
+      :class="[isScrolled ? 'bg-white/80 backdrop-blur-xl shadow-sm py-3' : 'bg-transparent py-6']"
+    >
+      <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+        <div class="flex items-center gap-3 group cursor-pointer" @click="scrollTo('hero')">
+          <div class="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center rotate-3 group-hover:rotate-0 transition-all shadow-lg shadow-emerald-200">
+            <span class="text-white font-black text-xl">E</span>
           </div>
-          <div class="hidden md:flex items-center gap-8">
-            <a href="#about" class="text-slate-700 hover:text-emerald-600 transition">About</a>
-            <a href="#projects" class="text-slate-700 hover:text-emerald-600 transition">Projects</a>
-            <a href="#offices" class="text-slate-700 hover:text-emerald-600 transition">Offices</a>
-            <a href="#contact" class="px-6 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-full hover:shadow-lg transition transform hover:scale-105">Contact</a>
-          </div>
+          <span class="text-xl font-black tracking-tighter transition-colors" :class="isScrolled ? 'text-slate-900' : 'text-white'">EAC</span>
         </div>
-      </nav>
-  
-      <!-- Hero Section -->
-      <section class="pt-32 pb-20 px-6 relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-br from-emerald-50/50 to-teal-50/50"></div>
-        <div class="max-w-6xl mx-auto relative z-10">
-          <div class="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <div class="inline-block mb-4 px-4 py-2 bg-emerald-100 rounded-full">
-                <span class="text-emerald-700 text-sm font-semibold">🌍 Sustainable Energy Leadership</span>
-              </div>
-              <h1 class="text-5xl md:text-6xl font-bold text-slate-900 mb-6 leading-tight">
-                <span class="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">Invest in the Future</span>
-                <br />of Renewable Energy
-              </h1>
-              <p class="text-xl text-slate-600 mb-8 leading-relaxed">
-                EAC connects institutional investors with high-yield renewable energy and solar investment opportunities. Our expert consultancy guides strategic investments in sustainable growth.
-              </p>
-              <div class="flex gap-4 flex-wrap">
-                <button @click="scrollTo('contact')" class="px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-lg font-semibold hover:shadow-xl transition transform hover:scale-105">
-                  Get Started
-                </button>
-                <button class="px-8 py-4 border-2 border-emerald-500 text-emerald-600 rounded-lg font-semibold hover:bg-emerald-50 transition">
-                  Learn More
-                </button>
-              </div>
-            </div>
-            <div class="relative h-96 md:h-full">
-              <img 
-                src="https://images.unsplash.com/photo-1509391366360-2e938aa1ef14?w=600&h=600&fit=crop" 
-                alt="Solar panels" 
-                class="w-full h-full object-cover rounded-2xl shadow-2xl hover:shadow-3xl transition"
-              />
-              <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl opacity-20 blur-2xl"></div>
-            </div>
-          </div>
+        
+        <div class="hidden md:flex items-center gap-10">
+          <a v-for="item in ['About', 'Projects', 'Offices']" :key="item" 
+             :href="`#${item.toLowerCase()}`" 
+             class="text-xs font-bold uppercase tracking-widest transition-colors"
+             :class="isScrolled ? 'text-slate-600 hover:text-emerald-600' : 'text-white/80 hover:text-white'">
+            {{ item }}
+          </a>
+          <button @click="scrollTo('contact')" 
+                  class="px-6 py-2.5 bg-emerald-600 text-white text-xs font-bold uppercase tracking-widest rounded-full hover:bg-emerald-500 hover:shadow-xl hover:shadow-emerald-200 transition-all active:scale-95">
+            Start Investing
+          </button>
         </div>
-      </section>
-  
-      <!-- Stats Section -->
-      <section class="py-16 px-6 bg-white">
-        <div class="max-w-6xl mx-auto">
-          <div class="grid md:grid-cols-4 gap-8">
-            <div class="text-center p-6">
-              <div class="text-4xl font-bold text-emerald-600 mb-2">$2.3B+</div>
-              <p class="text-slate-600">Assets Under Management</p>
-            </div>
-            <div class="text-center p-6">
-              <div class="text-4xl font-bold text-teal-600 mb-2">450+</div>
-              <p class="text-slate-600">Active Projects</p>
-            </div>
-            <div class="text-center p-6">
-              <div class="text-4xl font-bold text-emerald-600 mb-2">15 Years</div>
-              <p class="text-slate-600">Industry Experience</p>
-            </div>
-            <div class="text-center p-6">
-              <div class="text-4xl font-bold text-teal-600 mb-2">24.5%</div>
-              <p class="text-slate-600">Average Annual ROI</p>
-            </div>
-          </div>
-        </div>
-      </section>
-  
-      <!-- About Section -->
-      <section id="about" class="py-20 px-6 bg-gradient-to-b from-slate-50 to-slate-100">
-        <div class="max-w-6xl mx-auto">
-          <div class="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <img 
-                src="https://images.unsplash.com/photo-1497440991051-6da3b08ba192?w=600&h=600&fit=crop" 
-                alt="Wind turbines" 
-                class="w-full rounded-2xl shadow-2xl"
-              />
-            </div>
-            <div>
-              <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-6">Why Choose EAC?</h2>
-              <div class="space-y-6">
-                <div class="flex gap-4">
-                  <div class="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <span class="text-2xl">📊</span>
-                  </div>
-                  <div>
-                    <h3 class="font-bold text-lg text-slate-900">Expert Analysis</h3>
-                    <p class="text-slate-600">Deep-dive market research and due diligence on every opportunity</p>
-                  </div>
-                </div>
-                <div class="flex gap-4">
-                  <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <span class="text-2xl">🌱</span>
-                  </div>
-                  <div>
-                    <h3 class="font-bold text-lg text-slate-900">Sustainable Growth</h3>
-                    <p class="text-slate-600">Investments aligned with global sustainability goals</p>
-                  </div>
-                </div>
-                <div class="flex gap-4">
-                  <div class="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <span class="text-2xl">🔒</span>
-                  </div>
-                  <div>
-                    <h3 class="font-bold text-lg text-slate-900">Secure Returns</h3>
-                    <p class="text-slate-600">Risk management strategies protecting your capital</p>
-                  </div>
-                </div>
-                <div class="flex gap-4">
-                  <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <span class="text-2xl">🤝</span>
-                  </div>
-                  <div>
-                    <h3 class="font-bold text-lg text-slate-900">Dedicated Support</h3>
-                    <p class="text-slate-600">Personal account managers for institutional clients</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-  
-      <!-- Projects Portfolio -->
-      <section id="projects" class="py-20 px-6 bg-white">
-        <div class="max-w-6xl mx-auto">
-          <div class="text-center mb-16">
-            <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-4">Featured Projects</h2>
-            <p class="text-xl text-slate-600">Landmark investments showcasing our expertise across the renewable sector</p>
+
+        <button @click="mobileMenu = !mobileMenu" class="md:hidden text-white p-2">
+          <div class="w-6 h-0.5 bg-current mb-1.5 transition-all" :class="{'rotate-45 translate-y-2': mobileMenu}"></div>
+          <div class="w-6 h-0.5 bg-current mb-1.5" :class="{'opacity-0': mobileMenu}"></div>
+          <div class="w-6 h-0.5 bg-current" :class="{'-rotate-45 -translate-y-2': mobileMenu}"></div>
+        </button>
+      </div>
+    </nav>
+
+    <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <div class="absolute inset-0 z-0">
+        <img 
+          src="https://images.unsplash.com/photo-1466611653911-95282fc3656b?q=80&w=2070&auto=format&fit=crop" 
+          class="w-full h-full object-cover scale-110 motion-safe:animate-slow-zoom"
+          alt="Renewable Energy Landscape"
+        />
+        <div class="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-900/60 to-transparent"></div>
+      </div>
+
+      <div class="max-w-7xl mx-auto px-6 relative z-10 grid lg:grid-cols-2 gap-16 items-center pt-20">
+        <div v-reveal class="space-y-8 text-left">
+          <div class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full backdrop-blur-md">
+            <span class="relative flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span class="text-emerald-400 text-[10px] font-bold uppercase tracking-[0.2em]">Institutional Grade Assets</span>
           </div>
           
-          <div class="grid md:grid-cols-3 gap-8">
-            <!-- Project 1 -->
-            <div class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition">
-              <img 
-                src="https://images.unsplash.com/photo-1508720527620-ce4560e64412?w=500&h=500&fit=crop" 
-                alt="Solar Farm" 
-                class="w-full h-80 object-cover group-hover:scale-110 transition duration-300"
-              />
-              <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
-                <h3 class="text-2xl font-bold text-white mb-2">Saharan Solar Complex</h3>
-                <p class="text-emerald-100">850MW capacity | $420M invested | 24.8% ROI</p>
-              </div>
-            </div>
-  
-            <!-- Project 2 -->
-            <div class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition">
-              <img 
-                src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=500&h=500&fit=crop" 
-                alt="Wind Farm" 
-                class="w-full h-80 object-cover group-hover:scale-110 transition duration-300"
-              />
-              <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
-                <h3 class="text-2xl font-bold text-white mb-2">North Atlantic Wind Park</h3>
-                <p class="text-emerald-100">620MW capacity | $580M invested | 23.2% ROI</p>
-              </div>
-            </div>
-  
-            <!-- Project 3 -->
-            <div class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition">
-              <img 
-                src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=500&h=500&fit=crop" 
-                alt="Hydro Plant" 
-                class="w-full h-80 object-cover group-hover:scale-110 transition duration-300"
-              />
-              <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
-                <h3 class="text-2xl font-bold text-white mb-2">Alpine Hydroelectric Hub</h3>
-                <p class="text-emerald-100">340MW capacity | $295M invested | 25.1% ROI</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-  
-      <!-- Services Section -->
-      <section class="py-20 px-6 bg-gradient-to-b from-emerald-50 to-teal-50">
-        <div class="max-w-6xl mx-auto">
-          <h2 class="text-4xl md:text-5xl font-bold text-center text-slate-900 mb-16">Our Services</h2>
+          <h1 class="text-6xl md:text-8xl font-black text-white leading-[0.9] tracking-tighter">
+            Invest in <br/> <span class="text-emerald-500 italic">Impact</span> <br/> Returns.
+          </h1>
           
-          <div class="grid md:grid-cols-2 gap-12">
-            <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition">
-              <div class="text-4xl mb-4">💼</div>
-              <h3 class="text-2xl font-bold text-slate-900 mb-4">Investment Consulting</h3>
-              <p class="text-slate-600 mb-6">Custom portfolio strategies aligned with your investment goals and risk tolerance in renewable energy markets.</p>
-              <ul class="space-y-3 text-slate-700">
-                <li class="flex items-center gap-2">
-                  <span class="text-emerald-500">✓</span> Market analysis & due diligence
-                </li>
-                <li class="flex items-center gap-2">
-                  <span class="text-emerald-500">✓</span> Risk assessment frameworks
-                </li>
-                <li class="flex items-center gap-2">
-                  <span class="text-emerald-500">✓</span> Portfolio optimization
-                </li>
-              </ul>
-            </div>
-  
-            <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition">
-              <div class="text-4xl mb-4">🏗️</div>
-              <h3 class="text-2xl font-bold text-slate-900 mb-4">Project Development</h3>
-              <p class="text-slate-600 mb-6">End-to-end support from feasibility studies to operational management of renewable energy projects.</p>
-              <ul class="space-y-3 text-slate-700">
-                <li class="flex items-center gap-2">
-                  <span class="text-teal-500">✓</span> Site assessment & engineering
-                </li>
-                <li class="flex items-center gap-2">
-                  <span class="text-teal-500">✓</span> Regulatory compliance
-                </li>
-                <li class="flex items-center gap-2">
-                  <span class="text-teal-500">✓</span> Operations management
-                </li>
-              </ul>
-            </div>
-  
-            <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition">
-              <div class="text-4xl mb-4">📈</div>
-              <h3 class="text-2xl font-bold text-slate-900 mb-4">Performance Tracking</h3>
-              <p class="text-slate-600 mb-6">Real-time analytics and reporting dashboards for monitoring investment performance and returns.</p>
-              <ul class="space-y-3 text-slate-700">
-                <li class="flex items-center gap-2">
-                  <span class="text-emerald-500">✓</span> Monthly performance reports
-                </li>
-                <li class="flex items-center gap-2">
-                  <span class="text-emerald-500">✓</span> Live dashboard access
-                </li>
-                <li class="flex items-center gap-2">
-                  <span class="text-emerald-500">✓</span> Impact metrics reporting
-                </li>
-              </ul>
-            </div>
-  
-            <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition">
-              <div class="text-4xl mb-4">🌍</div>
-              <h3 class="text-2xl font-bold text-slate-900 mb-4">Sustainability Impact</h3>
-              <p class="text-slate-600 mb-6">Comprehensive ESG reporting and impact measurement aligned with global sustainability standards.</p>
-              <ul class="space-y-3 text-slate-700">
-                <li class="flex items-center gap-2">
-                  <span class="text-teal-500">✓</span> Carbon offset tracking
-                </li>
-                <li class="flex items-center gap-2">
-                  <span class="text-teal-500">✓</span> ESG compliance reporting
-                </li>
-                <li class="flex items-center gap-2">
-                  <span class="text-teal-500">✓</span> Impact certification
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-  
-      <!-- Office Locations -->
-      <section id="offices" class="py-20 px-6 bg-white">
-        <div class="max-w-6xl mx-auto">
-          <div class="text-center mb-16">
-            <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-4">Global Presence</h2>
-            <p class="text-xl text-slate-600">Connected across continents, closer to your opportunities</p>
-          </div>
-  
-          <div class="grid md:grid-cols-3 gap-8">
-            <!-- New York -->
-            <div class="bg-gradient-to-br from-emerald-50 to-teal-50 p-8 rounded-2xl border-2 border-emerald-200">
-              <div class="text-3xl mb-4">🗽</div>
-              <h3 class="text-2xl font-bold text-slate-900 mb-4">North America</h3>
-              <div class="space-y-4">
-                <div>
-                  <h4 class="font-bold text-slate-900">New York (HQ)</h4>
-                  <p class="text-slate-600">350 Fifth Avenue, Suite 2500</p>
-                  <p class="text-slate-600">New York, NY 10118</p>
-                  <p class="text-emerald-600 font-semibold">+1 (212) 555-0142</p>
-                </div>
-                <div>
-                  <h4 class="font-bold text-slate-900">San Francisco</h4>
-                  <p class="text-slate-600">101 California Street, Suite 1800</p>
-                  <p class="text-slate-600">San Francisco, CA 94111</p>
-                  <p class="text-emerald-600 font-semibold">+1 (415) 555-0184</p>
-                </div>
-              </div>
-            </div>
-  
-            <!-- London -->
-            <div class="bg-gradient-to-br from-teal-50 to-emerald-50 p-8 rounded-2xl border-2 border-teal-200">
-              <div class="text-3xl mb-4">🇬🇧</div>
-              <h3 class="text-2xl font-bold text-slate-900 mb-4">Europe</h3>
-              <div class="space-y-4">
-                <div>
-                  <h4 class="font-bold text-slate-900">London</h4>
-                  <p class="text-slate-600">30 St Mary Axe</p>
-                  <p class="text-slate-600">London, EC3A 8EP, UK</p>
-                  <p class="text-teal-600 font-semibold">+44 (20) 7946 0958</p>
-                </div>
-                <div>
-                  <h4 class="font-bold text-slate-900">Copenhagen</h4>
-                  <p class="text-slate-600">Nørregade 21, 4th Floor</p>
-                  <p class="text-slate-600">Copenhagen, 1165, Denmark</p>
-                  <p class="text-teal-600 font-semibold">+45 3312 2300</p>
-                </div>
-              </div>
-            </div>
-  
-            <!-- Singapore -->
-            <div class="bg-gradient-to-br from-emerald-50 to-teal-50 p-8 rounded-2xl border-2 border-emerald-200">
-              <div class="text-3xl mb-4">🏙️</div>
-              <h3 class="text-2xl font-bold text-slate-900 mb-4">Asia Pacific</h3>
-              <div class="space-y-4">
-                <div>
-                  <h4 class="font-bold text-slate-900">Singapore</h4>
-                  <p class="text-slate-600">71 Robinson Road, #16-04</p>
-                  <p class="text-slate-600">Singapore 068895</p>
-                  <p class="text-emerald-600 font-semibold">+65 6415 2200</p>
-                </div>
-                <div>
-                  <h4 class="font-bold text-slate-900">Melbourne</h4>
-                  <p class="text-slate-600">Level 3, 477 Collins Street</p>
-                  <p class="text-slate-600">Melbourne, VIC 3000, AU</p>
-                  <p class="text-emerald-600 font-semibold">+61 (3) 9650 2800</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-  
-      <!-- Contact CTA Section -->
-      <section id="contact" class="py-20 px-6 bg-gradient-to-br from-slate-900 to-slate-800 text-white">
-        <div class="max-w-4xl mx-auto">
-          <div class="text-center mb-12">
-            <h2 class="text-4xl md:text-5xl font-bold mb-4">Ready to Invest?</h2>
-            <p class="text-xl text-slate-300">Connect with our investment specialists to explore opportunities</p>
-          </div>
-  
-          <form @submit.prevent="submitForm" class="space-y-6 bg-slate-800/50 p-8 rounded-2xl backdrop-blur-sm">
-            <div class="grid md:grid-cols-2 gap-6">
-              <input 
-                v-model="form.name"
-                type="text" 
-                placeholder="Full Name" 
-                class="px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-emerald-500"
-                required
-              />
-              <input 
-                v-model="form.email"
-                type="email" 
-                placeholder="Email Address" 
-                class="px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-emerald-500"
-                required
-              />
-            </div>
-  
-            <div class="grid md:grid-cols-2 gap-6">
-              <input 
-                v-model="form.company"
-                type="text" 
-                placeholder="Company Name" 
-                class="px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-emerald-500"
-              />
-              <input 
-                v-model="form.investmentAmount"
-                type="text" 
-                placeholder="Investment Range (e.g., $5M - $20M)" 
-                class="px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-emerald-500"
-              />
-            </div>
-  
-            <textarea 
-              v-model="form.message"
-              placeholder="Tell us about your investment goals..." 
-              rows="5"
-              class="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-emerald-500"
-            ></textarea>
-  
-            <button 
-              type="submit"
-              class="w-full px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-lg font-bold text-lg hover:shadow-xl transition transform hover:scale-105"
-            >
-              Schedule Consultation
+          <p class="text-lg text-slate-300 max-w-lg leading-relaxed font-medium">
+            Bridging the gap between global capital and sustainable growth. We deliver risk-mitigated access to the world's most vital energy projects.
+          </p>
+
+          <div class="flex flex-col sm:flex-row gap-5">
+            <button @click="scrollTo('contact')" class="group px-8 py-4 bg-white text-slate-900 rounded-xl font-bold flex items-center justify-center gap-3 hover:bg-emerald-500 hover:text-white transition-all duration-300">
+              Inquire Now
+              <span class="group-hover:translate-x-1 transition-transform">→</span>
             </button>
-  
-            <p v-if="submitted" class="text-emerald-300 text-center">
-              ✓ Thank you! We'll contact you within 24 hours.
-            </p>
-          </form>
-  
-          <div class="mt-12 grid md:grid-cols-3 gap-8 text-center">
-            <div>
-              <p class="text-slate-400 mb-2">Email</p>
-              <p class="text-emerald-400 font-semibold">investors@eac-energy.com</p>
+            <button class="px-8 py-4 border border-white/20 bg-white/5 backdrop-blur-md text-white rounded-xl font-bold hover:bg-white/10 transition-all">
+              Our Vision
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-24 px-6 relative -mt-20 z-20">
+      <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div v-for="(stat, index) in stats" :key="index" v-reveal
+             class="bg-white p-8 rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 group hover:-translate-y-2 transition-all">
+          <p class="text-slate-400 font-bold uppercase tracking-widest text-[10px] mb-4">{{ stat.label }}</p>
+          <div class="text-4xl font-black text-slate-900 tracking-tighter mb-2 group-hover:text-emerald-600 transition-colors">
+            {{ stat.value }}
+          </div>
+          <div class="w-8 h-1 bg-emerald-100 rounded-full group-hover:w-16 transition-all duration-500"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="py-24 px-6 bg-slate-50">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+          <div v-reveal>
+            <h2 class="text-[10px] font-bold text-emerald-600 uppercase tracking-[0.4em] mb-4">The Portfolio</h2>
+            <h3 class="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter">Global Projects.</h3>
+          </div>
+          <p class="text-slate-500 max-w-sm font-medium border-l-2 border-emerald-500 pl-6">Deploying capital across high-performing solar, wind, and hydro assets worldwide.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 h-auto md:h-[600px]">
+          <div v-reveal class="md:col-span-8 group relative overflow-hidden rounded-[2.5rem] shadow-2xl h-80 md:h-full">
+            <img src="https://images.unsplash.com/photo-1509391366360-2e938aa1ef14?auto=format&fit=crop&q=80" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent p-10 flex flex-col justify-end">
+              <span class="text-emerald-400 font-bold uppercase tracking-widest text-[10px] mb-2">Solar Complex</span>
+              <h4 class="text-3xl font-black text-white">Saharan Infrastructure</h4>
             </div>
-            <div>
-              <p class="text-slate-400 mb-2">Phone</p>
-              <p class="text-teal-400 font-semibold">+1 (212) 555-0142</p>
-            </div>
-            <div>
-              <p class="text-slate-400 mb-2">Response Time</p>
-              <p class="text-emerald-400 font-semibold">Within 24 hours</p>
+          </div>
+          <div v-reveal class="md:col-span-4 group relative overflow-hidden rounded-[2.5rem] shadow-2xl h-80 md:h-full">
+            <img src="https://images.unsplash.com/photo-1497440991051-6da3b08ba192?auto=format&fit=crop&q=80" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent p-10 flex flex-col justify-end">
+              <h4 class="text-2xl font-black text-white">Nordic Wind Integration</h4>
             </div>
           </div>
         </div>
-      </section>
-  
-      <!-- Footer -->
-      <footer class="py-12 px-6 bg-slate-950 text-slate-400 border-t border-slate-800">
-        <div class="max-w-6xl mx-auto">
-          <div class="grid md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <div class="flex items-center gap-2 mb-4">
-                <div class="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center">
-                  <span class="text-white font-bold">E</span>
-                </div>
-                <span class="font-bold text-white">EAC</span>
+      </div>
+    </section>
+
+    <footer class="bg-slate-900 text-white pt-24 pb-12 rounded-t-[4rem]">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-16 mb-20">
+          
+          <div class="md:col-span-5 space-y-8">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center">
+                <span class="text-white font-black text-xl">E</span>
               </div>
-              <p class="text-sm">Leading renewable energy investment consultancy</p>
+              <span class="text-2xl font-black tracking-tighter">EAC</span>
             </div>
-            <div>
-              <h4 class="font-semibold text-white mb-4">Quick Links</h4>
-              <ul class="space-y-2 text-sm">
-                <li><a href="#about" class="hover:text-emerald-400 transition">About Us</a></li>
-                <li><a href="#projects" class="hover:text-emerald-400 transition">Projects</a></li>
-                <li><a href="#offices" class="hover:text-emerald-400 transition">Offices</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 class="font-semibold text-white mb-4">Services</h4>
-              <ul class="space-y-2 text-sm">
-                <li><a href="#" class="hover:text-teal-400 transition">Investment Consulting</a></li>
-                <li><a href="#" class="hover:text-teal-400 transition">Project Development</a></li>
-                <li><a href="#" class="hover:text-teal-400 transition">Performance Tracking</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 class="font-semibold text-white mb-4">Legal</h4>
-              <ul class="space-y-2 text-sm">
-                <li><a href="#" class="hover:text-emerald-400 transition">Privacy Policy</a></li>
-                <li><a href="#" class="hover:text-emerald-400 transition">Terms of Service</a></li>
-                <li><a href="#" class="hover:text-emerald-400 transition">Disclosures</a></li>
-              </ul>
+            <h5 class="text-3xl font-bold leading-tight max-w-sm">
+              Ready to redefine your <span class="text-emerald-500">energy strategy?</span>
+            </h5>
+            <div class="flex max-w-md bg-slate-800 rounded-xl p-1.5 border border-slate-700 focus-within:border-emerald-500 transition-all">
+              <input type="email" placeholder="Email address" class="bg-transparent border-none focus:ring-0 flex-1 px-4 text-sm" />
+              <button class="bg-emerald-600 px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-widest hover:bg-emerald-500 transition-all">Join</button>
             </div>
           </div>
-          <div class="border-t border-slate-800 pt-8 text-center text-sm">
-            <p>&copy; 2026 EAC Energy Consultancy. All rights reserved. | Committed to sustainable energy investment worldwide</p>
+
+          <div class="md:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-8">
+            <div v-for="(group, title) in footerLinks" :key="title">
+              <h6 class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.3em] mb-6">{{ title }}</h6>
+              <ul class="space-y-4">
+                <li v-for="link in group" :key="link.text">
+                  <a :href="link.url" class="text-sm text-slate-300 hover:text-emerald-400 transition-colors">{{ link.text }}</a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
-      </footer>
-    </div>
-  </template>
-  
-  <script setup lang="ts">
-  import { ref } from 'vue'
-  
-  const form = ref({
-    name: '',
-    email: '',
-    company: '',
-    investmentAmount: '',
-    message: ''
-  })
-  
-  const submitted = ref(false)
-  
-  const submitForm = () => {
-    console.log('Form submitted:', form.value)
-    submitted.value = true
-    setTimeout(() => {
-      form.value = { name: '', email: '', company: '', investmentAmount: '', message: '' }
-      submitted.value = false
-    }, 3000)
+
+        <div class="pt-12 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-8">
+          <p class="text-[11px] text-slate-500 font-medium">© 2026 EAC ENERGY CONSULTANCY. ALL RIGHTS RESERVED.</p>
+          <div class="flex gap-8">
+            <a v-for="social in ['LinkedIn', 'Twitter', 'Crunchbase']" :key="social" href="#" class="text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-white transition-all">
+              {{ social }}
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <button 
+      v-show="isScrolled"
+      @click="scrollTo('hero')"
+      class="fixed bottom-10 right-10 w-14 h-14 bg-emerald-600 text-white rounded-full flex items-center justify-center shadow-2xl hover:-translate-y-2 transition-all z-50"
+    >
+      ↑
+    </button>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
+
+const isScrolled = ref(false)
+const scrollProgress = ref(0)
+const mobileMenu = ref(false)
+
+const stats = [
+  { label: 'Asset Base', value: '$2.3B+' },
+  { label: 'Portfolio Growth', value: '24.5%' },
+  { label: 'Deployed Projects', value: '450+' },
+  { label: 'Partner Networks', value: '18' }
+]
+
+const footerLinks = {
+  navigation: [
+    { text: 'The Firm', url: '#' },
+    { text: 'Investment Portal', url: '#' },
+    { text: 'ESG Report', url: '#' },
+    { text: 'Case Studies', url: '#' }
+  ],
+  locations: [
+    { text: 'London Office', url: '#' },
+    { text: 'New York HQ', url: '#' },
+    { text: 'Singapore Hub', url: '#' },
+    { text: 'Nairobi', url: '#' }
+  ],
+  legal: [
+    { text: 'Privacy Policy', url: '#' },
+    { text: 'Terms of Service', url: '#' },
+    { text: 'Risk Disclosure', url: '#' },
+    { text: 'SEC Filings', url: '#' }
+  ]
+}
+
+const vReveal = {
+  mounted: (el: HTMLElement) => {
+    el.classList.add('opacity-0', 'translate-y-12', 'transition-all', 'duration-1000', 'ease-out')
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          el.classList.remove('opacity-0', 'translate-y-12')
+          el.classList.add('opacity-100', 'translate-y-0')
+        }
+      })
+    }, { threshold: 0.1 })
+    observer.observe(el)
   }
-  
-  const scrollTo = (id: string) => {
-    const element = document.getElementById(id)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
-    }
-  }
-  </script>
-  
-  <style scoped>
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-  
-  ::-webkit-scrollbar-track {
-    background: #f1f5f9;
-  }
-  
-  ::-webkit-scrollbar-thumb {
-    background: #10b981;
-    border-radius: 4px;
-  }
-  
-  ::-webkit-scrollbar-thumb:hover {
-    background: #059669;
-  }
-  </style>
+}
+
+const handleScroll = () => {
+  const winScroll = document.body.scrollTop || document.documentElement.scrollTop
+  const height = document.documentElement.scrollHeight - document.documentElement.clientHeight
+  scrollProgress.value = (winScroll / height) * 100
+  isScrolled.value = window.scrollY > 100
+}
+
+onMounted(() => window.addEventListener('scroll', handleScroll))
+onUnmounted(() => window.removeEventListener('scroll', handleScroll))
+
+const scrollTo = (id: string) => {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+}
+</script>
+
+<style>
+@keyframes slow-zoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.1); }
+}
+
+.animate-slow-zoom {
+  animation: slow-zoom 20s infinite alternate ease-in-out;
+}
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Hide scrollbar Firefox */
+}
+::-webkit-scrollbar {
+  display: none; /* Hide scrollbar Chrome/Safari */
+}
+</style>

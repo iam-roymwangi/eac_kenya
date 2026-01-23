@@ -16,5 +16,6 @@ Route::get('dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/projects', [HomeController::class, 'loadProjectsPage'])->name('projects');
+Route::get('/about', [HomeController::class, 'loadAboutPage'])->name('about');
 
 require __DIR__.'/settings.php';
