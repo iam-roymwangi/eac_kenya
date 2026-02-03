@@ -17,5 +17,8 @@ Route::get('dashboard', function () {
 
 Route::get('/projects', [HomeController::class, 'loadProjectsPage'])->name('projects');
 Route::get('/about', [HomeController::class, 'loadAboutPage'])->name('about');
+Route::get('/contact', [HomeController::class, 'loadContactPage'])->name('contact');
+Route::get('/our-process', [HomeController::class, 'loadProcessPage'])->name('process');
+Route::get('/privacy-policy', [HomeController::class, 'loadPrivacyPolicyPage'])->name('privacy-policy');
 
 require __DIR__.'/settings.php';

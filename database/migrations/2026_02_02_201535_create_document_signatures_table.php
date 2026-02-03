@@ -12,12 +12,12 @@ return new class extends Migration
             $table->bigIncrements('id');
 
             $table->foreignId('document_version_id')
-                  ->constrained()
-                  ->cascadeOnDelete();
+                ->constrained()
+                ->cascadeOnDelete();
 
             $table->foreignId('company_representative_id')
-                  ->constrained()
-                  ->restrictOnDelete();
+                ->constrained()
+                ->restrictOnDelete();
 
             $table->enum('role', ['SIGNATORY', 'WITNESS']);
 
@@ -27,11 +27,10 @@ return new class extends Migration
 
             $table->timestamps();
 
-            $table->unique([
-                'document_version_id',
-                'company_representative_id',
-                'role'
-            ]);
+            $table->unique(
+                ['document_version_id', 'company_representative_id', 'role'],
+                'doc_sigs_ver_rep_role_unique' // Custom name (under 64 chars)
+            );
         });
     }
 
