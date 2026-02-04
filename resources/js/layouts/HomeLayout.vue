@@ -20,17 +20,12 @@
                     class="flex cursor-pointer items-center gap-3"
                     @click="scrollTo('hero')"
                 >
-                    <div
-                        class="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-600 shadow-lg shadow-emerald-200"
-                    >
-                        <span class="text-xl font-black text-white">E</span>
-                    </div>
-                    <span
-                        class="text-xl font-black tracking-tighter uppercase"
-                        :class="isScrolled ? 'text-slate-900' : 'text-white'"
-                    >
-                        EAC Green Group
-                    </span>
+                    <img 
+                        src="/images/EAC_Logo.svg" 
+                        alt="EAC Green Group Logo" 
+                        class="h-10 w-auto"
+                    />
+                   
                 </div>
 
                 <div class="hidden items-center gap-8 lg:flex">
@@ -145,13 +140,11 @@
                 <div class="mb-20 grid grid-cols-1 gap-16 md:grid-cols-12">
                     <div class="space-y-8 md:col-span-5">
                         <div class="flex items-center gap-3">
-                            <div
-                                class="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-900"
-                            >
-                                <span class="text-xl font-black text-white"
-                                    >E</span
-                                >
-                            </div>
+                            <img 
+                                src="/images/EAC_Logo.svg" 
+                                alt="EAC Green Group Logo" 
+                                class="h-10 w-auto"
+                            />
                             <span
                                 class="text-2xl font-black tracking-tighter uppercase"
                                 >EAC Green Group</span
