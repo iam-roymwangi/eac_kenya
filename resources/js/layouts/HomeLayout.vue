@@ -68,7 +68,7 @@
                                 <a
                                     v-for="link in renewableLinks"
                                     :key="link"
-                                    href="#"
+                                    href="/projects"
                                     class="block border-b border-white/5 px-4 py-3 text-[10px] font-black tracking-[0.15em] text-white/70 uppercase transition-colors last:border-none hover:text-emerald-400"
                                 >
                                     {{ link }}
@@ -247,10 +247,10 @@ const footerLinks = {
     solutions: [
         { text: 'Technical Advisory', url: '#' },
         { text: '7-Step Process', url: '/our-process' },
-        { text: 'RFQ Templates', url: '#' },
+        { text: 'Contact Us', url: '/contact' },
     ],
     legal: [
-        { text: 'Privacy Policy', url: '#' },
+        { text: 'Privacy Policy', url: '/privacy-policy' },
         { text: 'Terms of Service', url: '#' },
         { text: 'NDA Agreement', url: '#' },
     ],

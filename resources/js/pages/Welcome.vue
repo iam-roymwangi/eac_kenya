@@ -7,7 +7,7 @@
         >
             <div class="absolute inset-0 z-0">
                 <img
-                    src="https://images.unsplash.com/photo-1509391366360-2e938aa1ef14?q=80&w=2070&auto=format&fit=crop"
+                    src="/images/Hero.png"
                     class="motion-safe:animate-slow-zoom h-full w-full scale-110 object-cover"
                     alt="Kenyan Solar Landscape"
                 />
