@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-white text-slate-900 font-sans selection:bg-emerald-100">
+  <HomeLayout>
     <section class="relative pt-32 pb-20 px-6 overflow-hidden bg-slate-900">
       <div class="absolute inset-0 opacity-40">
         <img src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?q=80&w=2070" class="w-full h-full object-cover" alt="Energy Infrastructure" />
@@ -117,10 +117,11 @@
         </div>
       </div>
     </footer>
-  </div>
+  </HomeLayout>
 </template>
 
 <script setup lang="ts">
+import HomeLayout from '@/layouts/HomeLayout.vue';
 const scopeItems = [
   {
     icon: '📐',

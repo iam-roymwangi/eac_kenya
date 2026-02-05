@@ -12,12 +12,12 @@ return new class extends Migration
             $table->bigIncrements('id');
 
             $table->foreignId('document_version_id')
-                  ->constrained()
-                  ->cascadeOnDelete();
+                ->constrained()
+                ->cascadeOnDelete();
 
             $table->foreignId('company_representative_id')
-                  ->constrained()
-                  ->restrictOnDelete();
+                ->constrained()
+                ->restrictOnDelete();
 
             $table->enum('role', ['SIGNATORY', 'WITNESS']);
 

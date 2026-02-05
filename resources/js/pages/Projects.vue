@@ -1,5 +1,6 @@
 <template>
-  <div class="min-h-screen bg-slate-50 font-sans selection:bg-emerald-100">
+  <HomeLayout>
+    <div class="min-h-screen bg-slate-50 font-sans selection:bg-emerald-100">
     <nav class="sticky top-0 z-[100] bg-white/70 backdrop-blur-xl border-b border-slate-200/60">
       <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <div class="flex items-center gap-3 cursor-pointer" @click="navigateHome">
@@ -155,11 +156,13 @@
         </div>
       </div>
     </Transition>
-  </div>
+    </div>
+  </HomeLayout>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import HomeLayout from '@/layouts/HomeLayout.vue';
 
 interface Project {
   name: string
