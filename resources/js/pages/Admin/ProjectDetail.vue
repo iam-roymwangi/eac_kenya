@@ -112,6 +112,10 @@
                 <p class="text-emerald-700 text-sm">Expires: {{ formatDateTime(project.qr_expires_at) }}</p>
               </div>
               
+              <div v-if="qrCodeDataUrl" class="mb-4 flex justify-center bg-white p-4 rounded-lg border border-slate-200">
+                <img :src="qrCodeDataUrl" alt="Project QR Code" class="w-48 h-48" />
+              </div>
+
               <div class="mb-4">
                 <label class="block text-sm font-medium text-slate-700 mb-2">QR Code URL:</label>
                 <div class="bg-slate-50 rounded-lg p-3">
@@ -197,9 +201,10 @@
 
 <script setup>
 import AppLayout from '@/layouts/AppLayout.vue'
-import { reactive, ref } from 'vue'
+import { reactive, ref, onMounted, watch } from 'vue'
 import { router } from '@inertiajs/vue3'
 import admin from '@/routes/admin'
+import QRCode from 'qrcode'
 
 const props = defineProps({
   project: Object,
@@ -215,6 +220,7 @@ const breadcrumbs = [
 
 const qrProcessing = ref(false)
 const stepProcessing = ref(false)
+const qrCodeDataUrl = ref(null)
 
 const qrForm = reactive({
   hours: 48
@@ -296,6 +302,33 @@ const generateQr = () => {
     }
   })
 }
+
+const generateQrCodeImage = async () => {
+  if (props.qr_url && !isQrExpired()) {
+    try {
+      qrCodeDataUrl.value = await QRCode.toDataURL(props.qr_url, {
+        width: 200,
+        margin: 2,
+        color: {
+          dark: '#000000',
+          light: '#ffffff'
+        }
+      })
+    } catch (err) {
+      console.error(err)
+    }
+  } else {
+    qrCodeDataUrl.value = null
+  }
+}
+
+onMounted(() => {
+  generateQrCodeImage()
+})
+
+watch(() => props.qr_url, () => {
+  generateQrCodeImage()
+})
 
 const resetStep = () => {
   stepProcessing.value = true
