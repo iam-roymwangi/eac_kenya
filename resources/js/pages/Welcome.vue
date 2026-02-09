@@ -407,10 +407,150 @@
                 </div>
             </div>
         </section>
+
+        <section id="team" class="relative z-20 bg-slate-50 px-6 py-32">
+            <div class="mx-auto max-w-7xl">
+                <div class="mb-16 max-w-3xl" v-reveal>
+                    <h2
+                        class="mb-4 text-[10px] font-black tracking-[0.4em] text-emerald-600 uppercase"
+                    >
+                        Meet the consultation team
+                    </h2>
+                    <h3 class="mb-6 text-4xl font-black tracking-tighter text-slate-900 md:text-6xl">
+                        Join Our Team.
+                    </h3>
+                    <p class="text-lg font-medium leading-relaxed text-slate-500">
+                        Explore our diverse case studies showcasing how our consultancy services in
+                        renewable energy, global trade, oil &amp; gas, water solutions, and sustainability
+                        have helped businesses overcome challenges and achieve long-term success.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                    <div
+                        v-for="member in consultationTeam"
+                        :key="member.name"
+                        v-reveal
+                        class="group rounded-[3rem] border border-slate-100 bg-white p-10 transition-all duration-500 hover:border-emerald-500 hover:shadow-2xl hover:shadow-slate-200"
+                    >
+                        <div class="mb-8 flex items-center gap-4">
+                            <div
+                                class="flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-600 text-xl font-black text-white shadow-lg shadow-emerald-200"
+                            >
+                                {{ member.initials }}
+                            </div>
+                            <div class="min-w-0">
+                                <div class="truncate text-lg font-black tracking-tighter text-slate-900">
+                                    {{ member.name }}
+                                </div>
+                                <div class="text-[10px] font-black tracking-widest text-emerald-600 uppercase">
+                                    {{ member.role }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-slate-100 pt-6">
+                            <p class="text-sm font-medium leading-relaxed text-slate-500">
+                                {{ member.title }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="relative z-20 bg-white px-6 py-32">
+            <div class="mx-auto max-w-4xl">
+                <div class="mb-16 text-center" v-reveal>
+                    <h2
+                        class="mb-4 text-[10px] font-black tracking-[0.4em] text-emerald-600 uppercase"
+                    >
+                        Contact Us
+                    </h2>
+                    <h3
+                        class="mb-6 text-4xl font-black tracking-tighter text-slate-900 md:text-6xl"
+                    >
+                        Project Inquiry.
+                    </h3>
+                    <p class="mx-auto max-w-2xl text-lg font-medium leading-relaxed text-slate-500">
+                        Share a few details and our team will respond within 24 hours.
+                    </p>
+                </div>
+
+                <div
+                    v-reveal
+                    class="rounded-[3rem] border border-slate-100 bg-slate-50 p-8 shadow-2xl shadow-slate-200 md:p-12"
+                >
+                    <form @submit.prevent="submitInquiry" class="space-y-6">
+                        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                            <div class="space-y-2">
+                                <label class="ml-2 text-[10px] font-black tracking-widest text-slate-400 uppercase">
+                                    Full Name
+                                </label>
+                                <input
+                                    v-model="contactForm.name"
+                                    type="text"
+                                    required
+                                    class="w-full rounded-2xl border-none bg-white px-6 py-4 font-medium text-slate-900 transition-all focus:ring-2 focus:ring-emerald-500"
+                                    placeholder="e.g. Ira Munn"
+                                />
+                            </div>
+                            <div class="space-y-2">
+                                <label class="ml-2 text-[10px] font-black tracking-widest text-slate-400 uppercase">
+                                    Company Email
+                                </label>
+                                <input
+                                    v-model="contactForm.email"
+                                    type="email"
+                                    required
+                                    class="w-full rounded-2xl border-none bg-white px-6 py-4 font-medium text-slate-900 transition-all focus:ring-2 focus:ring-emerald-500"
+                                    placeholder="name@company.com"
+                                />
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="ml-2 text-[10px] font-black tracking-widest text-slate-400 uppercase">
+                                Interest Area
+                            </label>
+                            <select
+                                v-model="contactForm.interest"
+                                class="w-full rounded-2xl border-none bg-white px-6 py-4 font-medium text-slate-900 transition-all focus:ring-2 focus:ring-emerald-500"
+                            >
+                                <option value="solar">Solar Energy Solutions</option>
+                                <option value="bess">Battery Storage (BESS)</option>
+                                <option value="regulatory">Regulatory & Compliance</option>
+                                <option value="water">Water Solutions</option>
+                            </select>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="ml-2 text-[10px] font-black tracking-widest text-slate-400 uppercase">
+                                Message
+                            </label>
+                            <textarea
+                                v-model="contactForm.message"
+                                rows="5"
+                                class="w-full rounded-2xl border-none bg-white px-6 py-4 font-medium text-slate-900 transition-all focus:ring-2 focus:ring-emerald-500"
+                                placeholder="Briefly describe your project requirements..."
+                            ></textarea>
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="w-full rounded-2xl bg-emerald-600 py-5 font-black tracking-widest text-white uppercase transition-all hover:bg-emerald-500 hover:shadow-xl hover:shadow-emerald-200 active:scale-95"
+                        >
+                            Send Inquiry
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
     </HomeLayout>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 import HomeLayout from '@/layouts/HomeLayout.vue';
 import {
     BarChart3,
@@ -422,6 +562,58 @@ import {
     Building2, Factory, 
     Coins, Sprout, Cpu, Briefcase, HeartPulse, HardHat
 } from 'lucide-vue-next';
+
+const contactForm = ref({
+    name: '',
+    email: '',
+    interest: 'solar',
+    message: '',
+});
+
+const submitInquiry = () => {
+    // Replace with real submission when backend endpoint is ready.
+    console.log('Homepage inquiry submitted:', contactForm.value);
+    alert('Thank you for your inquiry. Our technical team will reach out within 24 hours.');
+};
+
+const consultationTeam = [
+    {
+        name: 'Mr. Christian Khoury',
+        initials: 'CK',
+        title: 'Chief Operations Officer',
+        role: 'Operations',
+    },
+    {
+        name: 'Mr. Sam Sawaia',
+        initials: 'SS',
+        title: 'Head of Marketing',
+        role: 'Marketing',
+    },
+    {
+        name: 'Eng. Wycliffe Ochieng',
+        initials: 'WO',
+        title: 'Director - Quality Assurance & Compliance',
+        role: 'Quality & Compliance',
+    },
+    {
+        name: 'Eng. Kevin Obege',
+        initials: 'KO',
+        title: 'Director - Engineering & Technology',
+        role: 'Engineering',
+    },
+    {
+        name: 'Ms. Hazeline O.A.',
+        initials: 'HO',
+        title: 'Director - Legal and Corporate Affairs',
+        role: 'Legal',
+    },
+    {
+        name: 'BadBurry Yalo Connel',
+        initials: 'BY',
+        title: 'Head of Business Development',
+        role: 'Business Development',
+    },
+];
 
 const updatedServices = [
     {
@@ -516,10 +708,10 @@ const footerLinks = {
 
 const testimonials = [
     {
-        quote: 'Their facilitation for the Nyakwere Hills Solar project was instrumental in our high-level engagement and contract finalization in Kenya[cite: 243, 249].',
-        author: 'Ira Munn',
-        role: 'Chief Executive Officer [cite: 345]',
-        company: 'Ierospace Industries International Ltd ',
+        quote: "We've handled close to three projects with EAC green group, they conduct every step with professionalism and vigor, and we can say we are pleased and satisfied with their performance.",
+        author: 'Quaint Energy Kenya',
+        role: 'Client Partner',
+        company: 'Quaint Energy Kenya',
     },
     {
         quote: "EAC Green Group's structured 7-step process provided total clarity and risk mitigation from NDA signing to project implementation[cite: 102, 230].",
