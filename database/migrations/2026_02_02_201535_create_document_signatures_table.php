@@ -27,15 +27,16 @@ return new class extends Migration
 
             $table->timestamps();
 
-            $table->unique(
-                ['document_version_id', 'company_representative_id', 'role'],
-                'doc_sigs_ver_rep_role_unique' // Custom name (under 64 chars)
-            );
+            $table->unique([
+                'document_version_id',
+                'company_representative_id',
+                'role', 
+            ],'uniq_docver_rep_role');
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('signatures');
+        Schema::dropIfExists('document_signatures');
     }
 };

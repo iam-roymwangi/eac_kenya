@@ -1,19 +1,6 @@
 <template>
   <HomeLayout>
     <div class="min-h-screen bg-slate-50 font-sans selection:bg-emerald-100">
-    <nav class="sticky top-0 z-[100] bg-white/70 backdrop-blur-xl border-b border-slate-200/60">
-      <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-3 cursor-pointer" @click="navigateHome">
-          <div class="w-10 h-10 bg-emerald-600 rounded-xl shadow-lg shadow-emerald-200 flex items-center justify-center">
-            <span class="text-white font-black text-xl">E</span>
-          </div>
-          <span class="text-xl font-black tracking-tighter text-slate-900">EAC PORTFOLIO</span>
-        </div>
-        <button @click="navigateHome" class="group flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-emerald-600 transition-all">
-          <span class="group-hover:-translate-x-1 transition-transform">←</span> Back to HQ
-        </button>
-      </div>
-    </nav>
 
     <section class="relative py-24 px-6 overflow-hidden bg-slate-900 text-white rounded-b-[4rem]">
       <div class="absolute inset-0 opacity-20">
