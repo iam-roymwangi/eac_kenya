@@ -76,7 +76,7 @@
       </div>
     </section>
 
-    <section class="py-24 px-6 bg-slate-50">
+    <!-- <section class="py-24 px-6 bg-slate-50">
       <div class="max-w-4xl mx-auto text-center mb-16">
         <h2 v-reveal class="text-4xl font-black tracking-tighter mb-6 text-slate-900">Resource <span class="text-emerald-600">Center</span></h2>
         <p v-reveal class="text-slate-500 font-medium">Access technical templates and documentation for utility-scale solar project procurement.</p>
@@ -113,22 +113,137 @@
           </button>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <section class="py-24 px-6 text-center">
       <div v-reveal class="max-w-3xl mx-auto">
         <h2 class="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter mb-8 leading-tight">Ready to synchronize with the <span class="text-emerald-600">Kenyan Grid?</span></h2>
-        <button class="px-10 py-5 bg-emerald-600 text-white rounded-2xl font-black uppercase tracking-widest hover:shadow-2xl hover:shadow-emerald-200 transition-all transform hover:-translate-y-1">
+        <button 
+          @click="showInceptionModal = true"
+          class="px-10 py-5 bg-emerald-600 text-white rounded-2xl font-black uppercase tracking-widest hover:shadow-2xl hover:shadow-emerald-200 transition-all transform hover:-translate-y-1">
           Initiate Inception Meeting
         </button>
       </div>
     </section>
+
+    <!-- Inception Meeting Modal -->
+    <div v-if="showInceptionModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" @click.self="showInceptionModal = false">
+      <div class="bg-white rounded-3xl max-w-2xl w-full p-8 max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-3xl font-black text-slate-900">Initiate Inception Meeting</h3>
+          <button @click="showInceptionModal = false" class="text-slate-400 hover:text-slate-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+
+        <p class="text-slate-600 mb-6">Fill in your details to receive a QR code for starting the onboarding process.</p>
+
+        <form @submit.prevent="submitInceptionForm" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-2">Company Name *</label>
+            <input
+              v-model="inceptionForm.company_name"
+              type="text"
+              required
+              class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+              placeholder="Your Company Ltd"
+            >
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-2">Contact Person *</label>
+            <input
+              v-model="inceptionForm.contact_person"
+              type="text"
+              required
+              class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+              placeholder="John Doe"
+            >
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-2">Email Address *</label>
+            <input
+              v-model="inceptionForm.email"
+              type="email"
+              required
+              class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+              placeholder="john@company.com"
+            >
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-2">Phone Number *</label>
+            <input
+              v-model="inceptionForm.phone"
+              type="tel"
+              required
+              class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+              placeholder="+254 700 000 000"
+            >
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-2">Project Name *</label>
+            <input
+              v-model="inceptionForm.project_name"
+              type="text"
+              required
+              class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+              placeholder="Solar Farm Project"
+            >
+          </div>
+
+          <div class="flex gap-4 pt-4">
+            <button
+              type="button"
+              @click="showInceptionModal = false"
+              class="flex-1 px-6 py-3 border-2 border-slate-300 text-slate-700 rounded-lg font-medium hover:bg-slate-50 transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              :disabled="isSubmitting"
+              class="flex-1 px-6 py-3 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
+            >
+              <span v-if="isSubmitting">Processing...</span>
+              <span v-else>Generate QR Code</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
     </div>
   </HomeLayout>
 </template>
 
 <script setup lang="ts">
+import { ref, reactive } from 'vue'
+import { router } from '@inertiajs/vue3'
 import HomeLayout from '@/layouts/HomeLayout.vue';
+
+const showInceptionModal = ref(false)
+const isSubmitting = ref(false)
+
+const inceptionForm = reactive({
+  company_name: '',
+  contact_person: '',
+  email: '',
+  phone: '',
+  project_name: ''
+})
+
+const submitInceptionForm = () => {
+  isSubmitting.value = true
+  router.post('/initiate-inception', inceptionForm, {
+    onFinish: () => {
+      isSubmitting.value = false
+    }
+  })
+}
 
 const steps = [
   {

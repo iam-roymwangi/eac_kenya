@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -30,7 +29,13 @@ class OnboardingController extends Controller
     {
         $request->validate([
             'signature' => 'required|string',
-            'uuid' => 'required|string|exists:projects,uuid'
+            'uuid' => 'required|string|exists:projects,uuid',
+            'full_name' => 'required|string|max:255',
+            'company' => 'required|string|max:255',
+            'position' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|string|max:50',
+            'date' => 'required|date',
         ]);
 
         $project = Project::where('uuid', $request->uuid)->firstOrFail();
@@ -40,10 +45,15 @@ class OnboardingController extends Controller
             return redirect()->route('onboarding.step-one', ['uuid' => $project->uuid]);
         }
 
-        // Save signature and update step
+        // Save signature and NDA details, then update step
         $project->update([
             'nda_signature' => $request->signature,
             'nda_signed_at' => now(),
+            'nda_signer_name' => $request->full_name,
+            'nda_signer_company' => $request->company,
+            'nda_signer_position' => $request->position,
+            'nda_signer_email' => $request->email,
+            'nda_signer_phone' => $request->phone,
             'current_step' => 2,
         ]);
 
@@ -164,7 +174,8 @@ class OnboardingController extends Controller
 
     public function complete(Request $request): Response
     {
-        $project = $request->get('project');
+        $uuid = $request->route('uuid');
+        $project = Project::where('uuid', $uuid)->firstOrFail();
         
         return Inertia::render('Onboarding/Complete', [
             'project' => [

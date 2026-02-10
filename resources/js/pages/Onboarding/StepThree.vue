@@ -289,7 +289,12 @@ const submitRfq = () => {
   formData.append('regulatory_requirements', form.regulatory_requirements)
   formData.append('project_timeline', form.project_timeline)
   formData.append('environmental_considerations', form.environmental_considerations)
-  formData.append('financial_assumptions', JSON.stringify(form.financial_assumptions))
+  
+  // Add financial assumptions as individual fields
+  formData.append('financial_assumptions[budget_range]', form.financial_assumptions.budget_range)
+  formData.append('financial_assumptions[financing_structure]', form.financial_assumptions.financing_structure)
+  formData.append('financial_assumptions[roi_timeline]', form.financial_assumptions.roi_timeline)
+  formData.append('financial_assumptions[risk_tolerance]', form.financial_assumptions.risk_tolerance)
   
   // Add files
   selectedFiles.value.forEach((file, index) => {

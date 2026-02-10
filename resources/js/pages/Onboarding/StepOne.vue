@@ -22,19 +22,100 @@
       </div>
 
       <div class="bg-white rounded-lg shadow-lg p-8">
-        <!-- NDA Text Area -->
+        <!-- Document Viewer Section -->
         <div class="mb-8">
           <h3 class="text-lg font-semibold text-slate-900 mb-4">Non-Disclosure Agreement</h3>
+          
+          <!-- PDF Viewer (No Download) -->
+          <div class="border border-slate-300 rounded-lg overflow-hidden mb-4">
+            <iframe
+              src="/documents/NDA_EACGreenGroupLtd_template.pdf#toolbar=0&navpanes=0&scrollbar=1"
+              class="w-full h-[500px]"
+              @contextmenu.prevent
+              style="pointer-events: auto;"
+            ></iframe>
+          </div>
+          <p class="text-xs text-slate-500 mb-6">
+            Please review the entire agreement above before filling in your details and signing below.
+          </p>
+        </div>
+
+        <!-- NDA Details Form -->
+        <div class="mb-8">
+          <h3 class="text-lg font-semibold text-slate-900 mb-4">Your Information</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-2">Full Name *</label>
+              <input
+                v-model="form.full_name"
+                type="text"
+                required
+                class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                placeholder="John Doe"
+              >
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-2">Company/Organization *</label>
+              <input
+                v-model="form.company"
+                type="text"
+                required
+                class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                placeholder="Company Ltd"
+              >
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-2">Position/Title *</label>
+              <input
+                v-model="form.position"
+                type="text"
+                required
+                class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                placeholder="CEO"
+              >
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-2">Email Address *</label>
+              <input
+                v-model="form.email"
+                type="email"
+                required
+                class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                placeholder="john@company.com"
+              >
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-2">Phone Number *</label>
+              <input
+                v-model="form.phone"
+                type="tel"
+                required
+                class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                placeholder="+254 700 000 000"
+              >
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-2">Date</label>
+              <input
+                :value="currentDate"
+                type="text"
+                readonly
+                class="w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- NDA Text Area (Fallback) -->
+        <div class="mb-8">
+          <h3 class="text-lg font-semibold text-slate-900 mb-4">Agreement Text</h3>
           <div 
-            class="border border-slate-300 rounded-lg p-6 h-96 overflow-y-auto bg-slate-50 text-sm leading-relaxed select-none"
+            class="border border-slate-300 rounded-lg p-6 h-64 overflow-y-auto bg-slate-50 text-sm leading-relaxed select-none"
             @contextmenu.prevent
             style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;"
           >
             <div class="whitespace-pre-line">{{ ndaText }}</div>
           </div>
-          <p class="text-xs text-slate-500 mt-2">
-            Please read the entire agreement before signing below.
-          </p>
         </div>
 
         <!-- Signature Section -->
@@ -87,7 +168,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, nextTick, computed } from 'vue'
 import { router } from '@inertiajs/vue3'
 
 const props = defineProps({
@@ -104,6 +185,22 @@ const isDrawing = ref(false)
 const hasSignature = ref(false)
 const processing = ref(false)
 let ctx = null
+
+const form = ref({
+  full_name: '',
+  company: '',
+  position: '',
+  email: '',
+  phone: ''
+})
+
+const currentDate = computed(() => {
+  return new Date().toLocaleDateString('en-US', { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  })
+})
 
 onMounted(async () => {
   await nextTick()
@@ -194,7 +291,13 @@ const submitSignature = () => {
   
   router.post(`/onboarding/${props.project.uuid}/step-one`, {
     signature: signatureData,
-    uuid: props.project.uuid
+    uuid: props.project.uuid,
+    full_name: form.value.full_name,
+    company: form.value.company,
+    position: form.value.position,
+    email: form.value.email,
+    phone: form.value.phone,
+    date: new Date().toISOString().split('T')[0]
   }, {
     onFinish: () => {
       processing.value = false

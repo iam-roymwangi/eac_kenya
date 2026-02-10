@@ -70,6 +70,24 @@
 
         <!-- Inception Meeting Content -->
         <div class="mb-8">
+          <h3 class="text-lg font-semibold text-slate-900 mb-4">Intent to Award Document</h3>
+          
+          <!-- PDF Viewer for Intent Award -->
+          <div class="border border-slate-300 rounded-lg overflow-hidden mb-6">
+            <iframe
+              src="/documents/Intent_Award_EACGreenGroupLtd_template.pdf#toolbar=0&navpanes=0&scrollbar=1"
+              class="w-full h-[500px]"
+              @contextmenu.prevent
+              style="pointer-events: auto;"
+            ></iframe>
+          </div>
+          <p class="text-xs text-slate-500 mb-6">
+            Please review the Intent to Award document above. This outlines the preliminary agreement framework.
+          </p>
+        </div>
+
+        <!-- Inception Meeting Objectives -->
+        <div class="mb-8">
           <h3 class="text-lg font-semibold text-slate-900 mb-4">Inception Meeting Objectives</h3>
           
           <div class="bg-emerald-50 rounded-lg p-6 mb-6">

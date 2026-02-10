@@ -23,6 +23,9 @@ Route::get('/contact', [HomeController::class, 'loadContactPage'])->name('contac
 Route::get('/our-process', [HomeController::class, 'loadProcessPage'])->name('process');
 Route::get('/privacy-policy', [HomeController::class, 'loadPrivacyPolicyPage'])->name('privacy-policy');
 
+// Public route for initiating inception meeting
+Route::post('/initiate-inception', [HomeController::class, 'initiateInception'])->name('initiate-inception');
+
 // Admin Routes (protected by auth middleware)
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', function () {

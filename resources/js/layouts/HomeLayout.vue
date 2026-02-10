@@ -101,7 +101,6 @@
                     <div class="space-y-8 md:col-span-5">
                         <div class="flex items-center gap-3">
                             <img src="/images/EAC_Logo.svg" alt="EAC Green Group Logo" class="h-10 w-auto" />
-                            <span class="text-2xl font-black tracking-tighter uppercase">EAC Green Group</span>
                         </div>
                         <p class="max-w-sm font-medium text-slate-500">
                             Providing technical, regulatory, and strategic

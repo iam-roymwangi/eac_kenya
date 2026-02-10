@@ -22,6 +22,11 @@ class Project extends Model
         'qr_expires_at',
         'nda_signature',
         'nda_signed_at',
+        'nda_signer_name',
+        'nda_signer_company',
+        'nda_signer_position',
+        'nda_signer_email',
+        'nda_signer_phone',
         'inception_completed_at',
         'rfq_data',
         'rfq_completed_at',
@@ -53,10 +58,7 @@ class Project extends Model
         return $this->belongsTo(Company::class, 'client_company_id');
     }
 
-    public function documents()
-    {
-        return $this->hasMany(Document::class);
-    }
+    // Removed documents relationship - Document model not yet implemented
 
     public function isStepAccessible(int $step): bool
     {

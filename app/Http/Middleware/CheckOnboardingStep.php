@@ -27,7 +27,7 @@ class CheckOnboardingStep
         // Check if user can access this step
         if (!$project->canAccessStep($requiredStep)) {
             // Redirect to the current step they should be on
-            $currentStepRoute = $this->getStepRoute($project->current_step, $uuid);
+            $currentStepRoute = $this->getStepRoute($project->current_step);
             return redirect()->route($currentStepRoute, ['uuid' => $uuid]);
         }
 
@@ -37,7 +37,7 @@ class CheckOnboardingStep
         return $next($request);
     }
 
-    private function getStepRoute(int $step, string $uuid): string
+    private function getStepRoute(int $step): string
     {
         return match($step) {
             1 => 'onboarding.step-one',
