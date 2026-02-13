@@ -219,7 +219,14 @@ const projects = [
         location: 'Nyakwere, Kenya [cite: 243]',
         capacity: '40MW EPC Project [cite: 243]',
         bess: false,
-        image: 'https://images.unsplash.com/photo-1466611653911-95282fc3656b?q=80&w=2070&auto=format&fit=crop',
+        image: 'https://media.licdn.com/dms/image/v2/D4D22AQEuJWEPNGrp4w/feedshare-shrink_2048_1536/B4DZniGPs5JMAw-/0/1760434919295?e=2147483647&v=beta&t=VlN__V4p_uSQc4A9x-abBzD2pWo_CYUxHTNXXDC_27o',
+    },
+    {
+        name: 'Ol Ndanyat Wind Power Project',
+        location: 'Kona Baridi, Kajiado, Kenya',
+        capacity: '65MW',
+        bess: false,
+        image: '/images/ol-ndanyat-wind.png',
     },
 ];
 

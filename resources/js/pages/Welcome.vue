@@ -302,9 +302,9 @@
                 </div>
 
                 <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                    <div 
-                        v-for="sector in sectorItems" 
-                        :key="sector.title" 
+                    <div
+                        v-for="sector in sectorItems"
+                        :key="sector.title"
                         v-reveal
                         class="group relative flex flex-col justify-between overflow-hidden rounded-[2.5rem] bg-white p-8 border border-slate-100 transition-all duration-500 hover:border-emerald-500 hover:shadow-2xl hover:shadow-slate-200"
                     >
@@ -330,7 +330,7 @@
                 <div class="mt-20 flex justify-center" v-reveal>
                     <div class="rounded-3xl bg-slate-900 px-8 py-6 text-center shadow-xl">
                         <p class="text-[10px] font-bold tracking-widest text-slate-400 uppercase">
-                            Looking for something specific? 
+                            Looking for something specific?
                             <a href="/contact" class="ml-2 text-emerald-400 hover:text-white transition-colors">Speak to our advisors →</a>
                         </p>
                     </div>
@@ -559,7 +559,7 @@ import {
     Globe,
     Recycle,
     Zap,
-    Building2, Factory, 
+    Building2, Factory,
     Coins, Sprout, Cpu, Briefcase, HeartPulse, HardHat
 } from 'lucide-vue-next';
 
@@ -622,11 +622,6 @@ const updatedServices = [
         desc: 'Expert guidance on solar, wind, geothermal, and biofuel energy projects, including feasibility studies, project planning, and implementation strategies.',
     },
     {
-        title: 'Global Trade Management',
-        icon: Globe,
-        desc: 'Helping businesses navigate international trade, optimize supply chains, and ensure compliance with global regulations.',
-    },
-    {
         title: 'Oil & Gas Infrastructure',
         icon: Flame,
         desc: 'Providing strategic insights on oil and gas exploration, infrastructure development, risk management, and regulatory compliance.',
@@ -661,7 +656,14 @@ const projects = [
         location: 'Nyakwere, Kenya [cite: 243]',
         capacity: '40MW EPC Project [cite: 243]',
         bess: false,
-        image: 'https://images.unsplash.com/photo-1466611653911-95282fc3656b?q=80&w=2070&auto=format&fit=crop',
+        image: 'https://media.licdn.com/dms/image/v2/D4D22AQEuJWEPNGrp4w/feedshare-shrink_2048_1536/B4DZniGPs5JMAw-/0/1760434919295?e=2147483647&v=beta&t=VlN__V4p_uSQc4A9x-abBzD2pWo_CYUxHTNXXDC_27o',
+    },
+    {
+        name: 'Ol Ndanyat Wind Power Project',
+        location: 'Kona Baridi, Kajiado, Kenya',
+        capacity: '65MW',
+        bess: false,
+        image: 'public/images/ol-ndanyat-wind.png',
     },
 ];
 
