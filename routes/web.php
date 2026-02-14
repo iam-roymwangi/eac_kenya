@@ -39,6 +39,27 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
         ->name('projects.reset-step');
 });
 
+// Client Portal Routes
+Route::middleware(['auth', 'verified'])->prefix('client')->name('client.')->group(function () {
+    Route::get('/', function () {
+        return Inertia::render('client/Dashboard');
+    })->name('index');
+
+    // Client project views (scoped to company on the controller)
+    Route::get('/projects', [\App\Http\Controllers\Client\ClientController::class, 'index'])
+        ->name('projects.index');
+});
+
+// Financer Portal Routes
+Route::middleware(['auth', 'verified'])->prefix('financer')->name('financer.')->group(function () {
+    Route::get('/', function () {
+        return Inertia::render('financer/Dashboard');
+    })->name('index');
+
+    Route::get('/projects', [\App\Http\Controllers\Financer\FinancerController::class, 'index'])
+        ->name('projects.index');
+});
+
 // Onboarding Routes
 Route::prefix('onboarding')->group(function () {
     // Step 1: NDA Signing
