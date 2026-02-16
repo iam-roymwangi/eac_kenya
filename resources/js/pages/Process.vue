@@ -187,13 +187,16 @@
 
           <div>
             <label class="block text-sm font-medium text-slate-700 mb-2">Project Name *</label>
-            <input
+            <select
               v-model="inceptionForm.project_name"
-              type="text"
               required
-              class="w-full border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-              placeholder="Solar Farm Project"
+              class="w-full border border-slate-300 rounded-lg px-4 py-3 bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
             >
+              <option disabled value="">Select a project</option>
+              <option value="Kimuka 2 Solar PV">Kimuka 2 Solar PV</option>
+              <option value="Nyakwere Hills Solar">Nyakwere Hills Solar</option>
+              <option value="Ol Ndanyat Wind Power Project">Ol Ndanyat Wind Power Project</option>
+            </select>
           </div>
 
           <div>

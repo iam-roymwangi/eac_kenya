@@ -41,6 +41,41 @@
         </div>
       </div>
 
+      <!-- Project Summary -->
+      <div v-if="projectSummary" class="bg-slate-50 rounded-2xl p-6 mb-6 border border-slate-200">
+        <h3 class="font-bold text-slate-900 mb-3">Project Summary</h3>
+        <div class="space-y-2 text-sm text-slate-700">
+          <div class="flex justify-between">
+            <span class="text-slate-600">Location:</span>
+            <span class="font-medium text-slate-900">{{ projectSummary.location }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-600">Capacity:</span>
+            <span class="font-medium text-slate-900">{{ projectSummary.capacity }}</span>
+          </div>
+          <p class="mt-3 leading-relaxed">
+            {{ projectSummary.summary }}
+          </p>
+        </div>
+        <div class="mt-4 text-center">
+          <button
+            type="button"
+            @click="markInterest"
+            class="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-6 py-2 text-sm font-semibold text-white hover:bg-emerald-700 transition-colors disabled:bg-emerald-500"
+            :disabled="interestRecorded"
+          >
+            <span v-if="interestRecorded">Interest Recorded</span>
+            <span v-else>I have read this summary and I’m interested</span>
+          </button>
+          <p
+            v-if="interestRecorded"
+            class="mt-2 text-xs font-medium text-emerald-700"
+          >
+            Thank you. Your interest in this project has been noted.
+          </p>
+        </div>
+      </div>
+
       <!-- Instructions -->
       <div class="border-t border-slate-200 pt-6">
         <h3 class="font-bold text-slate-900 mb-3">Next Steps:</h3>
@@ -84,7 +119,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import QRCode from 'qrcode'
 
 const props = defineProps({
@@ -94,6 +129,33 @@ const props = defineProps({
 })
 
 const qrCodeContainer = ref(null)
+const interestRecorded = ref(false)
+
+const projectSummaries = {
+  'Kimuka 2 Solar PV': {
+    location: 'Kajiado County, Kenya',
+    capacity: '40MW Grid Connected',
+    summary:
+      'Kimuka 2 is a 40MW utility-scale solar PV plant designed to inject clean power directly into the Kenyan grid, supporting regional stability and long-term energy security.'
+  },
+  'Nyakwere Hills Solar': {
+    location: 'Nyakwere, Kenya',
+    capacity: '40MW EPC Project',
+    summary:
+      'Nyakwere Hills Solar is a 40MW EPC project focused on ground-mounted PV deployment in a high-irradiance corridor, optimized for reliable grid export and community impact.'
+  },
+  'Ol Ndanyat Wind Power Project': {
+    location: 'Kona Baridi, Kajiado, Kenya',
+    capacity: '65MW',
+    summary:
+      'Ol Ndanyat Wind Power Project is a 65MW onshore wind installation positioned along the Kona Baridi ridge, leveraging strong wind resources to complement solar generation profiles.'
+  }
+}
+
+const projectSummary = computed(() => {
+  if (!props.project || !props.project.name) return null
+  return projectSummaries[props.project.name] || null
+})
 
 onMounted(async () => {
   if (qrCodeContainer.value && props.qr_url) {
@@ -121,5 +183,8 @@ const downloadQR = async () => {
   link.download = `${props.project.name.replace(/\s+/g, '_')}_QR.png`
   link.href = canvas.toDataURL()
   link.click()
+}
+const markInterest = () => {
+  interestRecorded.value = true
 }
 </script>
