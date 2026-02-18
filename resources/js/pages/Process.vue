@@ -33,7 +33,7 @@
               <div 
                 class="w-16 h-16 rounded-2xl bg-white shadow-xl shadow-slate-200 border border-slate-100 flex items-center justify-center mb-6 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-500 transform group-hover:-translate-y-2"
               >
-                <span class="text-2xl font-black tracking-tighter group-hover:scale-110 transition-transform">0{{ index + 1 }}</span>
+                <span class="text-2xl text-black tracking-tighter group-hover:scale-110 transition-transform">0{{ index + 1 }}</span>
               </div>
 
               <div class="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-lg shadow-slate-200/50 flex-grow hover:border-emerald-200 transition-colors">
@@ -54,21 +54,21 @@
         <div v-for="(step, index) in steps" :key="'detail-' + index" class="mb-24 last:mb-0">
           <div :class="['flex flex-col md:flex-row items-center gap-12', index % 2 === 0 ? '' : 'md:flex-row-reverse']">
             <div class="md:w-1/2" v-reveal>
-              <span class="text-emerald-500 font-black text-6xl opacity-20 block mb-4">STEP 0{{ index + 1 }}</span>
+              <span class="text-emerald-500 text-black text-6xl opacity-20 block mb-4">STEP 0{{ index + 1 }}</span>
               <h2 class="text-4xl font-black tracking-tighter mb-6">{{ step.title }}</h2>
               <p class="text-slate-400 text-lg leading-relaxed mb-8">{{ step.fullDescription }}</p>
               
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div v-for="item in step.activities" :key="item" class="bg-white/5 p-4 rounded-2xl border border-white/10">
                   <p class="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-400 mb-1">Key Activity</p>
-                  <p class="text-sm font-bold">{{ item }}</p>
+                  <p class="text-sm font-bold text-white">{{ item }}</p>
                 </div>
               </div>
             </div>
             <div class="md:w-1/2 w-full aspect-video bg-white/5 rounded-[3rem] border border-white/10 flex items-center justify-center overflow-hidden" v-reveal>
                 <div class="p-12 text-center">
-                  <p class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-4">Phase Deliverable</p>
-                  <p class="text-2xl font-black text-emerald-500 italic">{{ step.output }}</p>
+                  <p class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-4">Phase Deliverable</p>
+                  <p class="text-2xl font-black text-emerald-400 italic">{{ step.output }}</p>
                 </div>
             </div>
           </div>
@@ -115,7 +115,7 @@
       </div>
     </section> -->
 
-    <section class="py-24 px-6 text-center">
+    <!-- <section class="py-24 px-6 text-center">
       <div v-reveal class="max-w-3xl mx-auto">
         <h2 class="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter mb-8 leading-tight">Ready to synchronize with the <span class="text-emerald-600">Kenyan Grid?</span></h2>
         <button 
@@ -124,7 +124,7 @@
           Initiate Inception Meeting
         </button>
       </div>
-    </section>
+    </section> -->
 
     <!-- Inception Meeting Modal -->
     <div v-if="showInceptionModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" @click.self="showInceptionModal = false">
@@ -196,6 +196,38 @@
             >
           </div>
 
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-3">Questions for the Meeting (Optional)</label>
+            <div class="space-y-3">
+              <div v-for="(question, index) in inceptionForm.questions" :key="index" class="flex gap-2">
+                <input
+                  v-model="inceptionForm.questions[index]"
+                  type="text"
+                  class="flex-1 border border-slate-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  :placeholder="'Question ' + (index + 1)"
+                >
+                <button
+                  v-if="inceptionForm.questions.length > 1"
+                  type="button"
+                  @click="removeQuestion(index)"
+                  class="px-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                  </svg>
+                </button>
+              </div>
+              <button
+                v-if="inceptionForm.questions.length < 5"
+                type="button"
+                @click="addQuestion"
+                class="w-full px-4 py-3 border-2 border-dashed border-slate-300 text-slate-600 rounded-lg font-medium hover:border-emerald-500 hover:text-emerald-600 transition-colors text-sm"
+              >
+                + Add Another Question
+              </button>
+            </div>
+          </div>
+
           <div class="flex gap-4 pt-4">
             <button
               type="button"
@@ -233,8 +265,21 @@ const inceptionForm = reactive({
   contact_person: '',
   email: '',
   phone: '',
-  project_name: ''
+  project_name: '',
+  questions: ['']
 })
+
+const addQuestion = () => {
+  if (inceptionForm.questions.length < 5) {
+    inceptionForm.questions.push('')
+  }
+}
+
+const removeQuestion = (index: number) => {
+  if (inceptionForm.questions.length > 1) {
+    inceptionForm.questions.splice(index, 1)
+  }
+}
 
 const submitInceptionForm = () => {
   isSubmitting.value = true
@@ -247,20 +292,20 @@ const submitInceptionForm = () => {
 
 const steps = [
   {
-    title: 'NDA Signing',
-    objective: 'Establish Confidentiality',
-    description: 'Protecting sensitive technical and financial information shared between parties.',
-    fullDescription: 'Before any detailed discussions or document exchanges, both parties sign a Non-Disclosure Agreement (NDA) to ensure strategic information remains confidential.',
-    activities: ['Legal Review', 'Digital Signature', 'Strategic Alignment'],
-    output: 'Signed NDA'
-  },
-  {
     title: 'Inception Meeting',
     objective: 'Project Alignment',
     description: 'Clarifying objectives, timelines, and stakeholder roles to confirm client needs.',
-    fullDescription: 'Following NDA execution, we introduce key stakeholders and define preliminary scope, risks, and constraints.',
+    fullDescription: 'We introduce key stakeholders and define preliminary scope, risks, and constraints to ensure alignment before proceeding.',
     activities: ['Stakeholder Intro', 'Risk Identification', 'Timeline Review'],
     output: 'Meeting Minutes'
+  },
+  {
+    title: 'NDA Signing',
+    objective: 'Establish Confidentiality',
+    description: 'Protecting sensitive technical and financial information shared between parties.',
+    fullDescription: 'Following the inception meeting, both parties sign a Non-Disclosure Agreement (NDA) to ensure strategic information remains confidential.',
+    activities: ['Legal Review', 'Digital Signature', 'Strategic Alignment'],
+    output: 'Signed NDA'
   },
   {
     title: 'RFQ & Documentation',

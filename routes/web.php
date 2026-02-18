@@ -18,6 +18,7 @@ Route::get('dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/projects', [HomeController::class, 'loadProjectsPage'])->name('projects');
+Route::get('/projects/{id}', [HomeController::class, 'showProject'])->name('projects.show');
 Route::get('/about', [HomeController::class, 'loadAboutPage'])->name('about');
 Route::get('/contact', [HomeController::class, 'loadContactPage'])->name('contact');
 Route::get('/our-process', [HomeController::class, 'loadProcessPage'])->name('process');
@@ -25,6 +26,10 @@ Route::get('/privacy-policy', [HomeController::class, 'loadPrivacyPolicyPage'])-
 
 // Public route for initiating inception meeting
 Route::post('/initiate-inception', [HomeController::class, 'initiateInception'])->name('initiate-inception');
+
+// Public routes for project interest and questions
+Route::post('/projects/record-interest', [HomeController::class, 'recordInterest'])->name('projects.record-interest');
+Route::post('/projects/ask-question', [HomeController::class, 'askQuestion'])->name('projects.ask-question');
 
 // Admin Routes (protected by auth middleware)
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
@@ -37,6 +42,14 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
         ->name('projects.generate-qr');
     Route::post('projects/{project}/reset-step', [ProjectAdminController::class, 'resetStep'])
         ->name('projects.reset-step');
+    
+    // Project interests and questions
+    Route::get('interests', [ProjectAdminController::class, 'interests'])
+        ->name('interests.index');
+    Route::get('questions', [ProjectAdminController::class, 'questions'])
+        ->name('questions.index');
+    Route::post('questions/{question}/respond', [ProjectAdminController::class, 'respondToQuestion'])
+        ->name('questions.respond');
 });
 
 // Client Portal Routes
