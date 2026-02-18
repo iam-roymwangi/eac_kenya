@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Models\ProjectInterest;
+use App\Models\ProjectQuestion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
@@ -17,8 +19,26 @@ class ProjectAdminController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
+        // Add interests and questions count to each project
+        $projects->getCollection()->transform(function ($project) {
+            $project->interests_count = ProjectInterest::where('project_name', $project->name)->count();
+            $project->questions_count = ProjectQuestion::where('project_name', $project->name)->count();
+            return $project;
+        });
+
+        // Get recent interests and questions
+        $recentInterests = ProjectInterest::orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+        
+        $recentQuestions = ProjectQuestion::orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
         return Inertia::render('Admin/Projects', [
-            'projects' => $projects
+            'projects' => $projects,
+            'recentInterests' => $recentInterests,
+            'recentQuestions' => $recentQuestions,
         ]);
     }
 
@@ -66,9 +86,20 @@ class ProjectAdminController extends Controller
             );
         }
 
+        // Get interests and questions for this project
+        $interests = ProjectInterest::where('project_name', $project->name)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        
+        $questions = ProjectQuestion::where('project_name', $project->name)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         return Inertia::render('Admin/ProjectDetail', [
             'project' => $project,
             'qr_url' => $qrUrl,
+            'interests' => $interests,
+            'questions' => $questions,
             'step_names' => [
                 1 => 'NDA Signing',
                 2 => 'Inception Meeting',
@@ -109,5 +140,39 @@ class ProjectAdminController extends Controller
         $project->update(['current_step' => $request->step]);
 
         return back()->with('success', 'Project step reset successfully.');
+    }
+
+    public function interests()
+    {
+        $interests = ProjectInterest::orderBy('created_at', 'desc')
+            ->paginate(20);
+
+        return Inertia::render('Admin/ProjectInterests', [
+            'interests' => $interests
+        ]);
+    }
+
+    public function questions()
+    {
+        $questions = ProjectQuestion::orderBy('created_at', 'desc')
+            ->paginate(20);
+
+        return Inertia::render('Admin/ProjectQuestions', [
+            'questions' => $questions
+        ]);
+    }
+
+    public function respondToQuestion(ProjectQuestion $question, Request $request)
+    {
+        $request->validate([
+            'response' => 'required|string|max:2000'
+        ]);
+
+        $question->update([
+            'admin_response' => $request->response,
+            'responded_at' => now(),
+        ]);
+
+        return back()->with('success', 'Response submitted successfully.');
     }
 }
