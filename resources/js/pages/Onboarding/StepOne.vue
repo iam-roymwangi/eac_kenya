@@ -4,7 +4,7 @@
       <!-- Header -->
       <div class="text-center mb-8">
         <h1 class="text-3xl font-bold text-slate-900 mb-2">EAC Green Group</h1>
-        <h2 class="text-xl text-slate-600 mb-4">Client Onboarding - Step 1: NDA Signing</h2>
+        <h2 class="text-xl text-slate-600 mb-4">Client Onboarding - Step 1: Inception Meeting</h2>
         <div class="text-sm text-slate-500">
           Project: {{ project.name }}
         </div>

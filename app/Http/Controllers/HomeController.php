@@ -47,6 +47,7 @@ class HomeController extends Controller
             'SOLAR' => 'Solar',
             'BESS' => 'Solar',
             'SOLAR_BESS' => 'Solar',
+            'WIND' => 'Wind',
             'OTHER' => 'Solar',
         ];
         return $mapping[$type] ?? 'Solar';

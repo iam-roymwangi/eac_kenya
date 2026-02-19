@@ -254,6 +254,7 @@
                     >
                         <img
                             :src="project.image"
+
                             class="h-full w-full object-cover opacity-60 transition-all duration-1000 group-hover:scale-105"
                         />
                         <div
@@ -663,7 +664,7 @@ const projects = [
         location: 'Kona Baridi, Kajiado, Kenya',
         capacity: '65MW',
         bess: false,
-        image: 'public/images/ol-ndanyat-wind.png',
+        image: 'images/ol-ndanyat-wind.png',
     },
 ];
 

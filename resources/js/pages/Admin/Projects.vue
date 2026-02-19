@@ -173,8 +173,8 @@ const formatProjectType = (type) => {
 
 const getStepName = (step) => {
   const names = {
-    1: 'NDA Signing',
-    2: 'Inception Meeting',
+    1: 'Inception Meeting',
+    2: 'NDA Signing',
     3: 'RFQ & Documentation',
     4: 'Proposal Development',
     5: 'Contract Negotiation',

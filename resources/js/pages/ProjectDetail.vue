@@ -424,7 +424,7 @@ const projectSteps = computed(() => [
     description: 'Initial project discussion and alignment',
     completed: props.project.current_step > 1,
     current: props.project.current_step === 1,
-    completedAt: null
+    completedAt: props.project.inception_completed_at
   },
   {
     title: 'NDA Signing',

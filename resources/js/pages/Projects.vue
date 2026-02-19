@@ -553,55 +553,29 @@ const props = defineProps<{
   dbProjects?: Project[]
 }>()
 
-const staticProjects: Project[] = [
-  {
-    name: 'Kenya Rift Geothermal',
-    type: 'Geothermal',
-    description: 'A flagship East African project tapping high-pressure steam for 24/7 industrial baseload power.',
-    fullDescription: 'Strategically located in the Olkaria region, this complex utilizes natural steam from the volcanic landscape of the Rift Valley. Unlike solar or wind, this asset provides 100% stable baseload energy, crucial for the growing manufacturing sector in Nairobi.',
-    capacity: '320 MW',
-    roi: '17.4%',
-    year: '2023',
-    location: 'Nakuru, Kenya',
-    image: 'https://images.unsplash.com/photo-1544923246-77307dd654ca?q=80&w=2070&auto=format&fit=crop',
-    metrics: ['95% Capacity Factor', 'Powers 1.2M citizens', 'Zero-emission steam loop']
-  },
-  {
-    name: 'Nordic Wind Park',
-    type: 'Wind',
-    description: 'Offshore wind cluster featuring next-gen 15MW turbines for the European Power Grid.',
-    fullDescription: 'Located in the steady-wind corridors of the North Sea, this project utilizes floating platform technology to access deep-water wind currents previously unreachable by traditional sea-bed turbines.',
-    capacity: '1,200 MW',
-    roi: '22.3%',
-    year: '2022',
-    location: 'North Sea, Denmark',
-    image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2070&auto=format&fit=crop',
-    metrics: ['80 offshore units', '2.5M tons CO2 offset', 'Advanced Hydrogen-ready grid']
-  },
-  {
-    name: 'Atacama Solar Hub',
-    type: 'Solar',
-    description: 'The highest-irradiance solar field on Earth, serving high-altitude mining operations.',
-    fullDescription: 'By deploying bifacial N-type cells in the high-altitude Atacama Desert, this project achieves the lowest LCOE (Levelized Cost of Energy) in the global market today.',
-    capacity: '500 MW',
-    roi: '20.1%',
-    year: '2024',
-    location: 'Atacama, Chile',
-    image: 'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=2070&auto=format&fit=crop',
-    metrics: ['Bifacial Cell Tech', '24/7 monitoring', 'Mining grid integration']
-  }
-]
+const staticProjects: Project[] = []
 
 // Merge database projects with static projects
 const projects = computed(() => {
-  const dbProjs = (props.dbProjects || []).map(p => ({
-    ...p,
-    fullDescription: p.description,
-    roi: 'TBD',
-    year: '2026',
-    image: 'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=2070&auto=format&fit=crop',
-    metrics: ['Clean Energy', 'Sustainable', 'High Impact']
-  }))
+  const dbProjs = (props.dbProjects || []).map(p => {
+    // Assign image based on project name or type
+    let image = 'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=2070&auto=format&fit=crop' // Default solar
+    
+    if (p.name === 'Nyakwere Hills Solar Project') {
+      image = 'https://media.licdn.com/dms/image/v2/D4D22AQEuJWEPNGrp4w/feedshare-shrink_2048_1536/B4DZniGPs5JMAw-/0/1760434919295?e=2147483647&v=beta&t=VlN__V4p_uSQc4A9x-abBzD2pWo_CYUxHTNXXDC_27o'
+    } else if (p.type === 'Wind') {
+      image = '/images/ol-ndanyat-wind.png'
+    }
+    
+    return {
+      ...p,
+      fullDescription: p.description,
+      roi: 'TBD',
+      year: '2026',
+      image: image,
+      metrics: ['Clean Energy', 'Sustainable', 'High Impact']
+    }
+  })
   return [...dbProjs, ...staticProjects]
 })
 

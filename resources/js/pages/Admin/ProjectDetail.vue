@@ -455,11 +455,11 @@ const isQrExpired = () => {
 }
 
 const getStepStatus = (stepNumber) => {
-  if (stepNumber === 1 && props.project.nda_signed_at) {
-    return `Signed: ${formatDateTime(props.project.nda_signed_at)}`
-  }
-  if (stepNumber === 2 && props.project.inception_completed_at) {
+  if (stepNumber === 1 && props.project.inception_completed_at) {
     return `Completed: ${formatDateTime(props.project.inception_completed_at)}`
+  }
+  if (stepNumber === 2 && props.project.nda_signed_at) {
+    return `Signed: ${formatDateTime(props.project.nda_signed_at)}`
   }
   if (stepNumber === 3 && props.project.rfq_completed_at) {
     return `Submitted: ${formatDateTime(props.project.rfq_completed_at)}`

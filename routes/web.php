@@ -75,14 +75,14 @@ Route::middleware(['auth', 'verified'])->prefix('financer')->name('financer.')->
 
 // Onboarding Routes
 Route::prefix('onboarding')->group(function () {
-    // Step 1: NDA Signing
+    // Step 1: Inception Meeting
     Route::get('/{uuid}', [OnboardingController::class, 'stepOne'])
         ->middleware('onboarding.step:1')
         ->name('onboarding.step-one');
     Route::post('/{uuid}/step-one', [OnboardingController::class, 'submitStepOne'])
         ->name('onboarding.submit-step-one');
     
-    // Step 2: Inception Meeting
+    // Step 2: NDA Signing
     Route::get('/{uuid}/inception', [OnboardingController::class, 'stepTwo'])
         ->middleware('onboarding.step:2')
         ->name('onboarding.step-two');
