@@ -13,43 +13,6 @@ class OnboardingController extends Controller
     {
         $project = $request->get('project');
         
-        return Inertia::render('Onboarding/StepTwo', [
-            'project' => [
-                'uuid' => $project->uuid,
-                'name' => $project->name,
-                'description' => $project->description,
-                'current_step' => $project->current_step,
-                'inception_completed' => !is_null($project->inception_completed_at),
-            ],
-        ]);
-    }
-
-    public function submitStepOne(Request $request)
-    {
-        $request->validate([
-            'uuid' => 'required|string|exists:projects,uuid'
-        ]);
-
-        $project = Project::where('uuid', $request->uuid)->firstOrFail();
-
-        // Ensure they're on step 1
-        if ($project->current_step !== 1) {
-            return redirect()->route('onboarding.step-one', ['uuid' => $project->uuid]);
-        }
-
-        // Mark inception as complete and move to step 2
-        $project->update([
-            'inception_completed_at' => now(),
-            'current_step' => 2,
-        ]);
-
-        return redirect()->route('onboarding.step-two', ['uuid' => $project->uuid]);
-    }
-
-    public function stepTwo(Request $request): Response
-    {
-        $project = $request->get('project');
-        
         return Inertia::render('Onboarding/StepOne', [
             'project' => [
                 'uuid' => $project->uuid,
@@ -65,7 +28,7 @@ class OnboardingController extends Controller
         ]);
     }
 
-    public function submitStepTwo(Request $request)
+    public function submitStepOne(Request $request)
     {
         $request->validate([
             'signature' => 'required|string',
@@ -80,9 +43,9 @@ class OnboardingController extends Controller
 
         $project = Project::where('uuid', $request->uuid)->firstOrFail();
 
-        // Ensure they're on step 2
-        if ($project->current_step !== 2) {
-            return redirect()->route('onboarding.step-two', ['uuid' => $project->uuid]);
+        // Ensure they're on step 1
+        if ($project->current_step !== 1) {
+            return redirect()->route('onboarding.step-one', ['uuid' => $project->uuid]);
         }
 
         // Save signature and NDA details, then update step
@@ -94,6 +57,43 @@ class OnboardingController extends Controller
             'nda_signer_position' => $request->position,
             'nda_signer_email' => $request->email,
             'nda_signer_phone' => $request->phone,
+            'current_step' => 2,
+        ]);
+
+        return redirect()->route('onboarding.step-two', ['uuid' => $project->uuid]);
+    }
+
+    public function stepTwo(Request $request): Response
+    {
+        $project = $request->get('project');
+        
+        return Inertia::render('Onboarding/StepTwo', [
+            'project' => [
+                'uuid' => $project->uuid,
+                'name' => $project->name,
+                'description' => $project->description,
+                'current_step' => $project->current_step,
+                'inception_completed' => !is_null($project->inception_completed_at),
+            ],
+        ]);
+    }
+
+    public function submitStepTwo(Request $request)
+    {
+        $request->validate([
+            'uuid' => 'required|string|exists:projects,uuid'
+        ]);
+
+        $project = Project::where('uuid', $request->uuid)->firstOrFail();
+
+        // Ensure they're on step 2
+        if ($project->current_step !== 2) {
+            return redirect()->route('onboarding.step-two', ['uuid' => $project->uuid]);
+        }
+
+        // Mark inception as complete and move to step 3
+        $project->update([
+            'inception_completed_at' => now(),
             'current_step' => 3,
         ]);
 

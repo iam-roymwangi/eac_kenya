@@ -31,6 +31,11 @@ class InceptionMeetingRequestNotification extends Notification
             ->line('**Email:** ' . $this->data['email'])
             ->line('**Phone:** ' . $this->data['phone']);
 
+        if (!empty($this->data['meeting_mode'])) {
+            $modeLabel = $this->data['meeting_mode'] === 'online' ? 'Online' : 'Physical';
+            $mail->line('**Preferred Mode:** ' . $modeLabel);
+        }
+
         if (!empty($this->questions)) {
             $mail->line('**Questions from Client:**');
             foreach ($this->questions as $index => $question) {
@@ -51,6 +56,7 @@ class InceptionMeetingRequestNotification extends Notification
             'company_name' => $this->data['company_name'],
             'contact_person' => $this->data['contact_person'],
             'email' => $this->data['email'],
+             'meeting_mode' => $this->data['meeting_mode'] ?? null,
             'questions_count' => count($this->questions),
         ];
     }

@@ -179,9 +179,9 @@
                   <button @click="openQuestionModal" class="w-full py-4 border-2 border-white text-white rounded-2xl font-bold uppercase tracking-widest hover:bg-white hover:text-slate-900 transition-all">
                     Ask a Question
                   </button>
-                  <button @click="initiateInception" class="w-full py-4 bg-white/10 text-white rounded-2xl font-bold uppercase tracking-widest hover:bg-white/20 transition-all">
-                    Start Onboarding
-                  </button>
+              <button @click="openInceptionModalFromSidebar" class="w-full py-4 bg-white/10 text-white rounded-2xl font-bold uppercase tracking-widest hover:bg-white/20 transition-all">
+                Initiate Inception Meeting
+              </button>
                 </div>
 
                 <div class="mt-8 pt-8 border-t border-white/10">
@@ -247,13 +247,20 @@
         </div>
       </section>
 
-      <!-- Interest Modal -->
+      <!-- Interest + Inception Wizard Modal -->
       <Transition name="fade">
-        <div v-if="showInterestModal" class="fixed inset-0 z-[250] flex items-center justify-center p-6 backdrop-blur-xl bg-slate-900/60" @click="closeInterestModal">
+        <div
+          v-if="showInterestModal"
+          class="fixed inset-0 z-[250] flex items-center justify-center p-6 backdrop-blur-xl bg-slate-900/60"
+          @click="closeInterestModal"
+        >
           <div @click.stop class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
             <div class="sticky top-0 bg-white border-b border-slate-200 p-8 flex justify-between items-center rounded-t-3xl">
               <div>
-                <h3 class="text-3xl font-black text-slate-900">Express Interest</h3>
+                <h3 class="text-3xl font-black text-slate-900">
+                  <span v-if="engagementStep === 1">Express Interest</span>
+                  <span v-else>Initiate Inception Meeting</span>
+                </h3>
                 <p class="text-sm text-slate-500 mt-1">{{ project.name }}</p>
               </div>
               <button @click="closeInterestModal" class="text-slate-400 hover:text-slate-600 transition-colors">
@@ -263,46 +270,278 @@
               </button>
             </div>
 
-            <form @submit.prevent="submitInterest" class="p-8 space-y-6">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label class="block text-sm font-bold text-slate-700 mb-2">Company Name *</label>
-                  <input v-model="interestForm.company_name" type="text" required class="w-full border border-slate-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all" placeholder="Your Company Ltd">
+            <form @submit.prevent="handleEngagementSubmit" class="p-8 space-y-6">
+              <!-- Step indicator -->
+              <div class="flex items-center gap-4 mb-2">
+                <div class="flex items-center gap-2">
+                  <div
+                    :class="[
+                      'w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold',
+                      engagementStep === 1 ? 'bg-emerald-600 text-white' : 'bg-emerald-100 text-emerald-700'
+                    ]"
+                  >
+                    1
+                  </div>
+                  <span class="text-xs font-semibold uppercase tracking-widest text-slate-500">
+                    Interest
+                  </span>
                 </div>
-                <div>
-                  <label class="block text-sm font-bold text-slate-700 mb-2">Contact Person *</label>
-                  <input v-model="interestForm.contact_person" type="text" required class="w-full border border-slate-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all" placeholder="John Doe">
+                <div class="flex-1 h-px bg-slate-200"></div>
+                <div class="flex items-center gap-2">
+                  <div
+                    :class="[
+                      'w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold',
+                      engagementStep === 2 ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-500'
+                    ]"
+                  >
+                    2
+                  </div>
+                  <span class="text-xs font-semibold uppercase tracking-widest text-slate-500">
+                    Inception Meeting
+                  </span>
                 </div>
               </div>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label class="block text-sm font-bold text-slate-700 mb-2">Email Address *</label>
-                  <input v-model="interestForm.email" type="email" required class="w-full border border-slate-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all" placeholder="john@company.com">
+
+              <!-- Step 1: Interest details -->
+              <div v-if="engagementStep === 1" class="space-y-6">
+                <p class="text-xs text-slate-500">
+                  Start by telling us about your company and the nature of your interest in this project.
+                  You'll confirm inception meeting preferences in the next step.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Company Name *</label>
+                    <input
+                      v-model="interestForm.company_name"
+                      type="text"
+                      required
+                      class="w-full text-black border border-slate-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                      placeholder="Your Company Ltd"
+                    >
+                  </div>
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Contact Person *</label>
+                    <input
+                      v-model="interestForm.contact_person"
+                      type="text"
+                      required
+                      class="w-full text-black border border-slate-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                      placeholder="John Doe"
+                    >
+                  </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Email Address *</label>
+                    <input
+                      v-model="interestForm.email"
+                      type="email"
+                      required
+                      class="w-full text-black border border-slate-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                      placeholder="john@company.com"
+                    >
+                  </div>
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Phone Number *</label>
+                    <input
+                      v-model="interestForm.phone"
+                      type="tel"
+                      required
+                      class="w-full text-black border border-slate-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                      placeholder="+254 700 000 000"
+                    >
+                  </div>
                 </div>
                 <div>
-                  <label class="block text-sm font-bold text-slate-700 mb-2">Phone Number *</label>
-                  <input v-model="interestForm.phone" type="tel" required class="w-full border border-slate-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all" placeholder="+254 700 000 000">
+                  <label class="block text-sm font-bold text-slate-700 mb-2">Interest Type *</label>
+                  <select
+                    v-model="interestForm.interest_type"
+                    required
+                    class="w-full text-black border border-slate-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                  >
+                    <option value="general">General Interest</option>
+                    <option value="investor">Investment Opportunity</option>
+                    <option value="partner">Partnership Inquiry</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-sm font-bold text-slate-700 mb-2">Message (Optional)</label>
+                  <textarea
+                    v-model="interestForm.message"
+                    rows="4"
+                    class="w-full text-black border border-slate-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all resize-none"
+                    placeholder="Tell us more about your interest..."
+                  ></textarea>
+                </div>
+
+                <div class="flex gap-4 pt-4">
+                  <button
+                    type="button"
+                    @click="closeInterestModal"
+                    class="flex-1 px-6 py-4 border-2 border-slate-300 text-slate-700 rounded-xl font-bold hover:bg-slate-50 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    @click="goToInceptionStep"
+                    class="flex-1 px-6 py-4 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 transition-colors"
+                  >
+                    Continue to Inception Meeting
+                  </button>
                 </div>
               </div>
-              <div>
-                <label class="block text-sm font-bold text-slate-700 mb-2">Interest Type *</label>
-                <select v-model="interestForm.interest_type" required class="w-full border border-slate-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all">
-                  <option value="general">General Interest</option>
-                  <option value="investor">Investment Opportunity</option>
-                  <option value="partner">Partnership Inquiry</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-sm font-bold text-slate-700 mb-2">Message (Optional)</label>
-                <textarea v-model="interestForm.message" rows="4" class="w-full border border-slate-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all resize-none" placeholder="Tell us more about your interest..."></textarea>
-              </div>
-              <div class="flex gap-4 pt-4">
-                <button type="button" @click="closeInterestModal" class="flex-1 px-6 py-4 border-2 border-slate-300 text-slate-700 rounded-xl font-bold hover:bg-slate-50 transition-colors">Cancel</button>
-                <button type="submit" :disabled="isSubmittingInterest" class="flex-1 px-6 py-4 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors">
-                  <span v-if="isSubmittingInterest">Submitting...</span>
-                  <span v-else>Submit Interest</span>
-                </button>
+
+              <!-- Step 2: Inception meeting preferences -->
+              <div v-else class="space-y-6">
+                <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 text-sm text-emerald-900">
+                  <p class="font-semibold mb-1">Inception Meeting Preferences</p>
+                  <p>We’ll generate a secure onboarding link after you submit this form.</p>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-bold text-slate-700 mb-2">Meeting Mode *</label>
+                  <div class="grid grid-cols-2 gap-3">
+                    <button
+                      type="button"
+                      @click="inceptionForm.meeting_mode = 'online'"
+                      :class="[
+                        'px-4 py-3 rounded-2xl text-sm font-semibold border flex items-center justify-center gap-2 transition-all',
+                        inceptionForm.meeting_mode === 'online'
+                          ? 'bg-emerald-600 text-white border-emerald-600 shadow-lg shadow-emerald-200'
+                          : 'bg-white text-slate-700 border-slate-200 hover:border-emerald-300'
+                      ]"
+                    >
+                      <span class="w-2 h-2 rounded-full bg-emerald-300"></span>
+                      <span>Online</span>
+                    </button>
+                    <button
+                      type="button"
+                      @click="inceptionForm.meeting_mode = 'physical'"
+                      :class="[
+                        'px-4 py-3 rounded-2xl text-sm font-semibold border flex items-center justify-center gap-2 transition-all',
+                        inceptionForm.meeting_mode === 'physical'
+                          ? 'bg-emerald-600 text-white border-emerald-600 shadow-lg shadow-emerald-200'
+                          : 'bg-white text-slate-700 border-slate-200 hover:border-emerald-300'
+                      ]"
+                    >
+                      <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                      <span>Physical</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Company Name *</label>
+                    <input
+                      v-model="inceptionForm.company_name"
+                      type="text"
+                      required
+                      class="w-full text-black border border-slate-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                      placeholder="Your Company Ltd"
+                    >
+                  </div>
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Contact Person *</label>
+                    <input
+                      v-model="inceptionForm.contact_person"
+                      type="text"
+                      required
+                      class="w-full text-black border border-slate-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                      placeholder="John Doe"
+                    >
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Email Address *</label>
+                    <input
+                      v-model="inceptionForm.email"
+                      type="email"
+                      required
+                      class="w-full text-black border border-slate-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                      placeholder="john@company.com"
+                    >
+                  </div>
+                  <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Phone Number *</label>
+                    <input
+                      v-model="inceptionForm.phone"
+                      type="tel"
+                      required
+                      class="w-full text-black border border-slate-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                      placeholder="+254 700 000 000"
+                    >
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-bold text-slate-700 mb-2">Project Name *</label>
+                  <input
+                    v-model="inceptionForm.project_name"
+                    type="text"
+                    readonly
+                    class="w-full bg-slate-50 text-black border border-slate-200 rounded-xl px-4 py-3"
+                  >
+                </div>
+
+                <div>
+                  <label class="block text-sm font-bold text-slate-700 mb-3">Questions for the Meeting (Optional)</label>
+                  <div class="space-y-3">
+                    <div
+                      v-for="(question, index) in inceptionForm.questions"
+                      :key="index"
+                      class="flex gap-2"
+                    >
+                      <input
+                        v-model="inceptionForm.questions[index]"
+                        type="text"
+                        class="flex-1 text-black border border-slate-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                        :placeholder="'Question ' + (index + 1)"
+                      >
+                      <button
+                        v-if="inceptionForm.questions.length > 1"
+                        type="button"
+                        @click="removeInceptionQuestion(index)"
+                        class="px-4 py-3 text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+                      >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                      </button>
+                    </div>
+                    <button
+                      v-if="inceptionForm.questions.length < 5"
+                      type="button"
+                      @click="addInceptionQuestion"
+                      class="w-full px-4 py-3 border-2 border-dashed border-slate-300 text-slate-600 rounded-xl font-medium hover:border-emerald-500 hover:text-emerald-600 transition-colors"
+                    >
+                      + Add Another Question
+                    </button>
+                  </div>
+                </div>
+
+                <div class="flex gap-4 pt-4">
+                  <button
+                    type="button"
+                    @click="engagementStep = 1"
+                    class="flex-1 px-6 py-4 border-2 border-slate-300 text-slate-700 rounded-xl font-bold hover:bg-slate-50 transition-colors"
+                  >
+                    Back
+                  </button>
+                  <button
+                    type="submit"
+                    :disabled="isSubmittingEngagement"
+                    class="flex-1 px-6 py-4 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
+                  >
+                    <span v-if="isSubmittingEngagement">Processing...</span>
+                    <span v-else>Submit &amp; Generate QR</span>
+                  </button>
+                </div>
               </div>
             </form>
           </div>
@@ -351,7 +590,9 @@
                 <textarea v-model="questionForm.question" rows="5" required class="w-full border border-slate-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all resize-none" placeholder="What would you like to know about this project?"></textarea>
               </div>
               <div class="flex gap-4 pt-4">
-                <button type="button" @click="closeQuestionModal" class="flex-1 px-6 py-4 border-2 border-slate-300 text-slate-700 rounded-xl font-bold hover:bg-slate-50 transition-colors">Cancel</button>
+                <button type="button" @click="closeQuestionModal" class="flex-1 px-6 py-4 border-2 border-slate-300 text-slate-700 rounded-xl font-bold hover:bg-slate-50 transition-colors">
+                  Cancel
+                </button>
                 <button type="submit" :disabled="isSubmittingQuestion" class="flex-1 px-6 py-4 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors">
                   <span v-if="isSubmittingQuestion">Submitting...</span>
                   <span v-else>Submit Question</span>
@@ -361,6 +602,7 @@
           </div>
         </div>
       </Transition>
+
     </div>
   </HomeLayout>
 </template>
@@ -395,7 +637,8 @@ const props = defineProps<{
 // Modal states
 const showInterestModal = ref(false)
 const showQuestionModal = ref(false)
-const isSubmittingInterest = ref(false)
+const engagementStep = ref<1 | 2>(1)
+const isSubmittingEngagement = ref(false)
 const isSubmittingQuestion = ref(false)
 
 // Forms
@@ -416,6 +659,16 @@ const questionForm = reactive({
   email: '',
   phone: '',
   question: ''
+})
+
+const inceptionForm = reactive({
+  project_name: props.project.name,
+  company_name: '',
+  contact_person: '',
+  email: '',
+  phone: '',
+  meeting_mode: 'online' as 'online' | 'physical',
+  questions: [''] as string[]
 })
 
 const projectSteps = computed(() => [
@@ -518,11 +771,13 @@ const formatDate = (date: string | null) => {
 }
 
 const openInterestModal = () => {
+  engagementStep.value = 1
   showInterestModal.value = true
 }
 
 const closeInterestModal = () => {
   showInterestModal.value = false
+  engagementStep.value = 1
 }
 
 const openQuestionModal = () => {
@@ -533,18 +788,50 @@ const closeQuestionModal = () => {
   showQuestionModal.value = false
 }
 
-const submitInterest = () => {
-  isSubmittingInterest.value = true
+const openInceptionModalFromSidebar = () => {
+  // Jump directly to step 2 but keep a single wizard experience
+  interestForm.project_name = props.project.name
+  inceptionForm.project_name = props.project.name
+  engagementStep.value = 2
+  showInterestModal.value = true
+}
+
+const goToInceptionStep = () => {
+  // Prefill inception form with interest data
+  inceptionForm.company_name = interestForm.company_name
+  inceptionForm.contact_person = interestForm.contact_person
+  inceptionForm.email = interestForm.email
+  inceptionForm.phone = interestForm.phone
+  inceptionForm.project_name = interestForm.project_name
+  engagementStep.value = 2
+}
+
+const handleEngagementSubmit = () => {
+  if (engagementStep.value === 1) {
+    goToInceptionStep()
+    return
+  }
+
+  isSubmittingEngagement.value = true
+
+  // First record interest, then initiate inception meeting
   router.post('/projects/record-interest', interestForm, {
     onSuccess: () => {
-      closeInterestModal()
-      alert('Thank you for your interest! We will contact you shortly.')
+      router.post('/initiate-inception', inceptionForm, {
+        onSuccess: () => {
+          closeInterestModal()
+        },
+        onError: () => {
+          alert('There was an error initiating the inception meeting. Please try again.')
+        },
+        onFinish: () => {
+          isSubmittingEngagement.value = false
+        }
+      })
     },
     onError: () => {
-      alert('There was an error submitting your interest. Please try again.')
-    },
-    onFinish: () => {
-      isSubmittingInterest.value = false
+      alert('There was an error submitting your interest. Please check the details and try again.')
+      isSubmittingEngagement.value = false
     }
   })
 }
@@ -565,8 +852,16 @@ const submitQuestion = () => {
   })
 }
 
-const initiateInception = () => {
-  router.visit('/our-process')
+const addInceptionQuestion = () => {
+  if (inceptionForm.questions.length < 5) {
+    inceptionForm.questions.push('')
+  }
+}
+
+const removeInceptionQuestion = (index: number) => {
+  if (inceptionForm.questions.length > 1) {
+    inceptionForm.questions.splice(index, 1)
+  }
 }
 
 const vReveal = {

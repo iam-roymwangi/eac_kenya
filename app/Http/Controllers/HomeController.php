@@ -90,6 +90,7 @@ class HomeController extends Controller
             'email' => 'required|email|max:255',
             'phone' => 'required|string|max:50',
             'project_name' => 'required|string|max:255',
+            'meeting_mode' => 'required|in:online,physical',
             'questions' => 'nullable|array',
             'questions.*' => 'string|max:1000',
         ]);
@@ -125,7 +126,7 @@ class HomeController extends Controller
         $admins = User::all(); // You may want to filter by role
         if ($admins->count() > 0) {
             Notification::send($admins, new InceptionMeetingRequestNotification(
-                $request->only(['company_name', 'contact_person', 'email', 'phone', 'project_name']),
+                $request->only(['company_name', 'contact_person', 'email', 'phone', 'project_name', 'meeting_mode']),
                 $questions
             ));
         }

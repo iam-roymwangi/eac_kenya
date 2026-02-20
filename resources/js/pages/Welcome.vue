@@ -250,12 +250,12 @@
                         v-for="project in projects"
                         :key="project.name"
                         v-reveal
-                        class="group relative aspect-[16/10] overflow-hidden rounded-[3rem] border border-white/10"
+                        @click="handleProjectClick(project)"
+                        class="group relative aspect-[16/10] overflow-hidden rounded-[3rem] border border-white/10 cursor-pointer transition-all hover:border-emerald-500 hover:scale-[1.02]"
                     >
                         <img
                             :src="project.image"
-
-                            class="h-full w-full object-cover opacity-60 transition-all duration-1000 group-hover:scale-105"
+                            class="h-full w-full object-cover opacity-60 transition-all duration-1000 group-hover:scale-105 group-hover:opacity-80"
                         />
                         <div
                             class="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent p-12"
@@ -277,6 +277,10 @@
                                     class="rounded-full bg-emerald-600/20 px-4 py-1.5 text-[10px] font-bold tracking-widest text-emerald-400 uppercase backdrop-blur-md"
                                     >BESS Integrated</span
                                 >
+                            </div>
+                            <div class="mt-4 flex items-center gap-2 text-emerald-400 text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+                                <span>View Details</span>
+                                <span>→</span>
                             </div>
                         </div>
                     </div>
@@ -551,7 +555,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { router } from '@inertiajs/vue3';
 import HomeLayout from '@/layouts/HomeLayout.vue';
 import {
     BarChart3,
@@ -563,6 +568,21 @@ import {
     Building2, Factory,
     Coins, Sprout, Cpu, Briefcase, HeartPulse, HardHat
 } from 'lucide-vue-next';
+
+interface DbProject {
+    id: number
+    name: string
+    location: string
+    capacity: string
+    bess: boolean
+    image: string
+    isDatabase: boolean
+}
+
+const props = defineProps<{
+    canRegister?: boolean
+    dbProjects?: DbProject[]
+}>()
 
 const contactForm = ref({
     name: '',
@@ -644,13 +664,14 @@ const updatedServices = [
     },
 ];
 
-const projects = [
+const staticProjects = [
     {
         name: 'Kimuka 2 Solar PV',
         location: 'Kajiado County, Kenya [cite: 7]',
         capacity: '40MW Grid Connected [cite: 7]',
         bess: true,
         image: 'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=2070&auto=format&fit=crop',
+        isDatabase: false,
     },
     {
         name: 'Nyakwere Hills Solar',
@@ -658,6 +679,7 @@ const projects = [
         capacity: '40MW EPC Project [cite: 243]',
         bess: false,
         image: 'https://media.licdn.com/dms/image/v2/D4D22AQEuJWEPNGrp4w/feedshare-shrink_2048_1536/B4DZniGPs5JMAw-/0/1760434919295?e=2147483647&v=beta&t=VlN__V4p_uSQc4A9x-abBzD2pWo_CYUxHTNXXDC_27o',
+        isDatabase: false,
     },
     {
         name: 'Ol Ndanyat Wind Power Project',
@@ -665,8 +687,25 @@ const projects = [
         capacity: '65MW',
         bess: false,
         image: 'images/ol-ndanyat-wind.png',
+        isDatabase: false,
     },
 ];
+
+// Merge database projects with static projects
+const projects = computed(() => {
+    if (props.dbProjects && props.dbProjects.length > 0) {
+        return props.dbProjects
+    }
+    return staticProjects
+})
+
+const handleProjectClick = (project: any) => {
+    if (project.isDatabase && project.id) {
+        router.visit(`/projects/${project.id}`)
+    } else {
+        router.visit('/projects')
+    }
+}
 
 const sectorItems = [
     { title: 'Renewable Energy & Sustainability', icon: Zap },

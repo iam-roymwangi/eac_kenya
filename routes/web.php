@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ClientAdminController;
 use App\Http\Controllers\Admin\ProjectAdminController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OnboardingController;
@@ -8,8 +9,25 @@ use Inertia\Inertia;
 use Laravel\Fortify\Features;
 
 Route::get('/', function () {
+    // Get featured projects from database
+    $dbProjects = \App\Models\Project::orderBy('created_at', 'desc')
+        ->take(3)
+        ->get()
+        ->map(function ($project) {
+            return [
+                'id' => $project->id,
+                'name' => $project->name,
+                'location' => $project->location ?? 'Kenya',
+                'capacity' => $project->capacity_mw ? $project->capacity_mw . 'MW' : 'TBD',
+                'bess' => in_array($project->project_type, ['BESS', 'SOLAR_BESS']),
+                'image' => 'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=2070&auto=format&fit=crop',
+                'isDatabase' => true,
+            ];
+        });
+
     return Inertia::render('Welcome', [
         'canRegister' => Features::enabled(Features::registration()),
+        'dbProjects' => $dbProjects,
     ]);
 })->name('home');
 
@@ -42,6 +60,14 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
         ->name('projects.generate-qr');
     Route::post('projects/{project}/reset-step', [ProjectAdminController::class, 'resetStep'])
         ->name('projects.reset-step');
+    Route::post('projects/{project}/schedule-inception', [ProjectAdminController::class, 'scheduleInception'])
+        ->name('projects.schedule-inception');
+    
+    // Client management
+    Route::get('clients', [ClientAdminController::class, 'index'])
+        ->name('clients.index');
+    Route::get('clients/{interest}', [ClientAdminController::class, 'show'])
+        ->name('clients.show');
     
     // Project interests and questions
     Route::get('interests', [ProjectAdminController::class, 'interests'])

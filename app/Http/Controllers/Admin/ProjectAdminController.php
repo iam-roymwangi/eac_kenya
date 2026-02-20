@@ -142,6 +142,21 @@ class ProjectAdminController extends Controller
         return back()->with('success', 'Project step reset successfully.');
     }
 
+    public function scheduleInception(Project $project, Request $request)
+    {
+        $data = $request->validate([
+            'inception_meeting_mode' => 'nullable|in:online,physical',
+            'inception_meeting_scheduled_at' => 'nullable|date',
+            'inception_meeting_location' => 'nullable|string|max:255',
+            'inception_meeting_link' => 'nullable|string|max:255',
+            'inception_meeting_notes' => 'nullable|string|max:2000',
+        ]);
+
+        $project->update($data);
+
+        return back()->with('success', 'Inception meeting schedule updated successfully.');
+    }
+
     public function interests()
     {
         $interests = ProjectInterest::orderBy('created_at', 'desc')

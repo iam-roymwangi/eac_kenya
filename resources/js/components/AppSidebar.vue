@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid, FolderKanban } from 'lucide-vue-next';
+import { BookOpen, Folder, LayoutGrid, FolderKanban, Users } from 'lucide-vue-next';
 
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
@@ -30,6 +30,11 @@ const mainNavItems: NavItem[] = [
         title: 'Project Management',
         href: admin.projects.index.url(),
         icon: FolderKanban,
+    },
+    {
+        title: 'Manage Clients',
+        href: '/admin/clients',
+        icon: Users,
     },
 ];
 

@@ -1,16 +1,14 @@
 <template>
   <div class="min-h-screen bg-slate-50">
     <div class="max-w-4xl mx-auto px-4 py-8">
-      <!-- Header -->
       <div class="text-center mb-8">
         <h1 class="text-3xl font-bold text-slate-900 mb-2">EAC Green Group</h1>
-        <h2 class="text-xl text-slate-600 mb-4">Client Onboarding - Step 1: Inception Meeting</h2>
+        <h2 class="text-xl text-slate-600 mb-4">Client Onboarding - Step 1: NDA Signing</h2>
         <div class="text-sm text-slate-500">
-          Project: {{ project.name }}
+          Project: {{ project?.name || 'Loading...' }}
         </div>
       </div>
 
-      <!-- Progress Bar -->
       <div class="mb-8">
         <div class="flex items-center justify-between text-sm text-slate-600 mb-2">
           <span>Step 1 of 3</span>
@@ -22,144 +20,120 @@
       </div>
 
       <div class="bg-white rounded-lg shadow-lg p-8">
-        <!-- Document Viewer Section -->
         <div class="mb-8">
-          <h3 class="text-lg font-semibold text-slate-900 mb-4">Non-Disclosure Agreement</h3>
-          
-          <!-- PDF Viewer (No Download) -->
-          <div class="border border-slate-300 rounded-lg overflow-hidden mb-4">
-            <iframe
-              src="/documents/NDA_EACGreenGroupLtd_template.pdf#toolbar=0&navpanes=0&scrollbar=1"
-              class="w-full h-[500px]"
-              @contextmenu.prevent
-              style="pointer-events: auto;"
-            ></iframe>
+          <h3 class="text-lg font-semibold text-slate-900 mb-4">Non-Disclosure Agreement Template</h3>
+          <p class="text-sm text-slate-600 mb-4">
+            Please review the NDA template below. You can scroll through the document directly.
+          </p>
+
+          <div class="border border-slate-300 rounded-lg overflow-hidden mb-4 relative">
+
+            <div class="absolute top-0 left-0 right-0 h-[50px] z-10 bg-transparent" @contextmenu.prevent></div>
+
+            <div class="absolute top-0 right-0 bottom-0 w-[60px] z-10 bg-transparent" @contextmenu.prevent></div>
+
+            <iframe :src="`/documents/NDA_EACGreenGroupLtd_template.pdf#toolbar=0&navpanes=0&scrollbar=1&view=FitH`"
+              class="w-full h-[600px] z-0" style="border: none;"></iframe>
           </div>
-          <p class="text-xs text-slate-500 mb-6">
-            Please review the entire agreement above before filling in your details and signing below.
+
+          <p class="text-xs text-slate-500 italic">
+            Note: If you cannot see the document, please ensure your browser's PDF viewer is enabled.
           </p>
         </div>
 
-        <!-- NDA Details Form -->
         <div class="mb-8">
           <h3 class="text-lg font-semibold text-slate-900 mb-4">Your Information</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-2">Full Name *</label>
-              <input
-                v-model="form.full_name"
-                type="text"
-                required
-                class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                placeholder="John Doe"
-              >
+              <input v-model="form.full_name" type="text" required
+                class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"
+                placeholder="John Doe">
             </div>
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-2">Company/Organization *</label>
-              <input
-                v-model="form.company"
-                type="text"
-                required
-                class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                placeholder="Company Ltd"
-              >
+              <input v-model="form.company" type="text" required
+                class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"
+                placeholder="Company Ltd">
             </div>
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-2">Position/Title *</label>
-              <input
-                v-model="form.position"
-                type="text"
-                required
-                class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                placeholder="CEO"
-              >
+              <input v-model="form.position" type="text" required
+                class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"
+                placeholder="CEO">
             </div>
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-2">Email Address *</label>
-              <input
-                v-model="form.email"
-                type="email"
-                required
-                class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                placeholder="john@company.com"
-              >
+              <input v-model="form.email" type="email" required
+                class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"
+                placeholder="john@company.com">
             </div>
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-2">Phone Number *</label>
-              <input
-                v-model="form.phone"
-                type="tel"
-                required
-                class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                placeholder="+254 700 000 000"
-              >
+              <input v-model="form.phone" type="tel" required
+                class="w-full border border-slate-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"
+                placeholder="+254 700 000 000">
             </div>
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-2">Date</label>
-              <input
-                :value="currentDate"
-                type="text"
-                readonly
-                class="w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50"
-              >
+              <input :value="currentDate" type="text" readonly
+                class="w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 text-slate-500">
             </div>
           </div>
         </div>
 
-        <!-- NDA Text Area (Fallback) -->
-        <div class="mb-8">
-          <h3 class="text-lg font-semibold text-slate-900 mb-4">Agreement Text</h3>
-          <div 
-            class="border border-slate-300 rounded-lg p-6 h-64 overflow-y-auto bg-slate-50 text-sm leading-relaxed select-none"
-            @contextmenu.prevent
-            style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;"
-          >
-            <div class="whitespace-pre-line">{{ ndaText }}</div>
-          </div>
-        </div>
-
-        <!-- Signature Section -->
         <div class="mb-8">
           <h3 class="text-lg font-semibold text-slate-900 mb-4">Digital Signature</h3>
-          <div class="border-2 border-dashed border-slate-300 rounded-lg p-4">
-            <canvas
-              ref="signaturePad"
-              class="w-full h-32 bg-white border border-slate-200 rounded cursor-crosshair"
-              @mousedown="startSigning"
-              @mousemove="sign"
-              @mouseup="stopSigning"
-              @touchstart="startSigning"
-              @touchmove="sign"
-              @touchend="stopSigning"
-            ></canvas>
+          <div class="border-2 border-dashed border-slate-300 rounded-lg p-4 bg-slate-50">
+            <canvas ref="signaturePad"
+              class="w-full h-32 bg-white border border-slate-200 rounded cursor-crosshair touch-none"
+              @mousedown="startSigning" @mousemove="sign" @mouseup="stopSigning" @mouseleave="stopSigning"
+              @touchstart="startSigning" @touchmove="sign" @touchend="stopSigning"></canvas>
             <div class="flex justify-between items-center mt-3">
-              <p class="text-sm text-slate-600">Sign above to agree to the terms</p>
-              <button
-                @click="clearSignature"
-                type="button"
-                class="text-sm text-slate-500 hover:text-slate-700 underline"
-              >
+              <p class="text-xs text-slate-500">Draw your signature in the box above</p>
+              <button @click="clearSignature" type="button" class="text-sm text-red-500 hover:text-red-700 font-medium">
                 Clear Signature
               </button>
             </div>
           </div>
         </div>
 
-        <!-- Error Display -->
-        <div v-if="errors.signature" class="mb-4">
-          <p class="text-red-600 text-sm">{{ errors.signature }}</p>
+        <div class="mb-8 p-6 bg-slate-100 rounded-lg border border-slate-200 select-none" @contextmenu.prevent>
+          <h3 class="text-sm font-bold text-slate-800 uppercase mb-4 text-center">Preview of Generated Document</h3>
+          <div class="bg-white p-8 shadow-sm text-[12px] leading-relaxed text-slate-700">
+            <p class="mb-4">This Agreement is made on <strong>{{ currentDate }}</strong> between <strong>EAC Green Group
+                Ltd</strong> and <strong>{{ form.full_name || '____' }}</strong>.</p>
+            <p class="mb-4">The Receiving Party acknowledges that they will receive Confidential Information regarding
+              <strong>{{ project?.name }}</strong> and agrees to maintain strict confidentiality.
+            </p>
+
+            <div class="mt-8 grid grid-cols-2 gap-8">
+              <div>
+                <p class="font-bold border-b border-slate-200 mb-2">Client Signature</p>
+                <div class="h-12 flex items-center">
+                  <img v-if="signatureDataUrl" :src="signatureDataUrl" class="max-h-full" />
+                  <span v-else class="text-slate-300 italic">Pending signature...</span>
+                </div>
+                <p class="mt-2 text-[10px]">{{ form.full_name }}</p>
+              </div>
+              <div>
+                <p class="font-bold border-b border-slate-200 mb-2">Company Signature</p>
+                <div class="h-12 flex items-center">
+                  <span class="text-slate-300 italic text-[10px]">Counter-signed on receipt</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="flex justify-between">
-          <div></div>
-          <button
-            @click="submitSignature"
-            :disabled="!hasSignature || processing"
-            class="bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white px-8 py-3 rounded-lg font-medium transition-colors"
-          >
-            <span v-if="processing">Processing...</span>
-            <span v-else>Sign & Continue</span>
+        <div v-if="errors.signature" class="mb-4 p-3 bg-red-50 text-red-600 text-sm rounded border border-red-200">
+          {{ errors.signature }}
+        </div>
+
+        <div class="flex justify-end pt-6 border-t border-slate-100">
+          <button @click="submitSignature" :disabled="!hasSignature || processing || !form.full_name"
+            class="bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white px-10 py-3 rounded-lg font-bold shadow-md transition-all transform active:scale-95">
+            {{ processing ? 'Processing...' : 'Agree & Continue' }}
           </button>
         </div>
       </div>
@@ -173,17 +147,14 @@ import { router } from '@inertiajs/vue3'
 
 const props = defineProps({
   project: Object,
-  ndaText: String,
-  errors: {
-    type: Object,
-    default: () => ({})
-  }
+  errors: Object
 })
 
 const signaturePad = ref(null)
 const isDrawing = ref(false)
 const hasSignature = ref(false)
 const processing = ref(false)
+const signatureDataUrl = ref(null)
 let ctx = null
 
 const form = ref({
@@ -195,66 +166,43 @@ const form = ref({
 })
 
 const currentDate = computed(() => {
-  return new Date().toLocaleDateString('en-US', { 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
+  return new Date().toLocaleDateString('en-US', {
+    year: 'numeric', month: 'long', day: 'numeric'
   })
 })
 
 onMounted(async () => {
   await nextTick()
   setupCanvas()
-  
-  // Disable right-click and print
-  document.addEventListener('contextmenu', e => e.preventDefault())
-  document.addEventListener('keydown', e => {
-    if (e.ctrlKey && e.key === 'p') {
-      e.preventDefault()
-    }
-  })
 })
 
 const setupCanvas = () => {
   const canvas = signaturePad.value
   if (!canvas) return
-  
+
   ctx = canvas.getContext('2d')
-  
-  // Set canvas size
   const rect = canvas.getBoundingClientRect()
-  canvas.width = rect.width * 2
-  canvas.height = rect.height * 2
-  ctx.scale(2, 2)
-  
-  // Set drawing styles
-  ctx.strokeStyle = '#1e293b'
+
+  // Handle High DPI displays
+  const dpr = window.devicePixelRatio || 1
+  canvas.width = rect.width * dpr
+  canvas.height = rect.height * dpr
+  ctx.scale(dpr, dpr)
+
+  ctx.strokeStyle = '#0f172a'
   ctx.lineWidth = 2
   ctx.lineCap = 'round'
   ctx.lineJoin = 'round'
 }
 
 const getEventPos = (e) => {
-  const canvas = signaturePad.value
-  const rect = canvas.getBoundingClientRect()
-  
-  let clientX, clientY
-  if (e.touches) {
-    clientX = e.touches[0].clientX
-    clientY = e.touches[0].clientY
-  } else {
-    clientX = e.clientX
-    clientY = e.clientY
-  }
-  
-  return {
-    x: clientX - rect.left,
-    y: clientY - rect.top
-  }
+  const rect = signaturePad.value.getBoundingClientRect()
+  const clientX = e.touches ? e.touches[0].clientX : e.clientX
+  const clientY = e.touches ? e.touches[0].clientY : e.clientY
+  return { x: clientX - rect.left, y: clientY - rect.top }
 }
 
 const startSigning = (e) => {
-  e.preventDefault()
   isDrawing.value = true
   const pos = getEventPos(e)
   ctx.beginPath()
@@ -263,63 +211,52 @@ const startSigning = (e) => {
 
 const sign = (e) => {
   if (!isDrawing.value) return
-  e.preventDefault()
-  
   const pos = getEventPos(e)
   ctx.lineTo(pos.x, pos.y)
   ctx.stroke()
   hasSignature.value = true
+  signatureDataUrl.value = signaturePad.value.toDataURL()
 }
 
-const stopSigning = (e) => {
-  e.preventDefault()
+const stopSigning = () => {
   isDrawing.value = false
 }
 
 const clearSignature = () => {
-  const canvas = signaturePad.value
-  ctx.clearRect(0, 0, canvas.width, canvas.height)
+  ctx.clearRect(0, 0, signaturePad.value.width, signaturePad.value.height)
   hasSignature.value = false
+  signatureDataUrl.value = null
 }
 
 const submitSignature = () => {
   if (!hasSignature.value) return
-  
   processing.value = true
-  const canvas = signaturePad.value
-  const signatureData = canvas.toDataURL('image/png')
-  
+
   router.post(`/onboarding/${props.project.uuid}/step-one`, {
-    signature: signatureData,
-    uuid: props.project.uuid,
-    full_name: form.value.full_name,
-    company: form.value.company,
-    position: form.value.position,
-    email: form.value.email,
-    phone: form.value.phone,
+    ...form.value,
+    signature: signatureDataUrl.value,
     date: new Date().toISOString().split('T')[0]
   }, {
-    onFinish: () => {
-      processing.value = false
-    }
+    onFinish: () => processing.value = false
   })
 }
 </script>
 
 <style scoped>
-/* Disable text selection and right-click */
-* {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
+/* Specific protections instead of global ones */
+.select-none {
   user-select: none;
+  -webkit-user-select: none;
 }
 
+/* Hide specific elements during print instead of blocking the whole page */
 @media print {
-  body {
-    display: none !important;
+  .no-print {
+    display: none;
+  }
+
+  iframe {
+    display: none;
   }
 }
 </style>

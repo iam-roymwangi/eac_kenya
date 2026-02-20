@@ -266,6 +266,7 @@ const inceptionForm = reactive({
   email: '',
   phone: '',
   project_name: '',
+  meeting_mode: 'online' as 'online' | 'physical',
   questions: ['']
 })
 

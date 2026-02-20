@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { Head, useForm, usePage } from '@inertiajs/vue3';
-import AppLayout from '@/layouts/AppLayout.vue
-import routes from '@/routes';
+import AppLayout from '@/layouts/AppLayout.vue';
 
 const breadcrumbs = [
-  { title: 'Client', href: routes.client().url },
-  { title: 'Onboard', href: routes.client().onboard?.url ?? '#' },
+  { title: 'Clients', href: '/admin/clients' },
+  { title: 'Onboard', href: '/admin/clients/create' },
 ];
 
 const form = useForm({
@@ -72,10 +71,10 @@ function submit() {
             {{ form.processing ? 'Creating...' : 'Create Client' }}
           </button>
 
-          <a :href="routes.client().projects.index.url()" class="text-emerald-600 underline">Back to dashboard</a>
+          <a href="/admin/clients" class="text-emerald-600 underline">Back to dashboard</a>
         </div>
 
-        <p v-if="form.errors.message" class="text-sm text-red-600">{{ form.errors.message }}</p>
+        <!-- <p v-if="form.errors.message" class="text-sm text-red-600">{{ form.errors.message }}</p> -->
       </form>
     </div>
   </AppLayout>

@@ -279,66 +279,6 @@
 
         <!-- Actions Sidebar -->
         <div class="space-y-6">
-          <!-- QR Code Management -->
-          <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-lg font-semibold text-slate-900 mb-4">QR Code Management</h3>
-            
-            <div v-if="qr_url && !isQrExpired()" class="mb-4">
-              <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-4 mb-4">
-                <p class="text-emerald-800 text-sm font-medium mb-2">QR Code Active</p>
-                <p class="text-emerald-700 text-sm">Expires: {{ formatDateTime(project.qr_expires_at) }}</p>
-              </div>
-              
-              <div v-if="qrCodeDataUrl" class="mb-4 flex justify-center bg-white p-4 rounded-lg border border-slate-200">
-                <img :src="qrCodeDataUrl" alt="Project QR Code" class="w-48 h-48" />
-              </div>
-
-              <div class="mb-4">
-                <label class="block text-sm font-medium text-slate-700 mb-2">QR Code URL:</label>
-                <div class="bg-slate-50 rounded-lg p-3">
-                  <code class="text-xs text-slate-700 break-all">{{ qr_url }}</code>
-                </div>
-                <button
-                  @click="copyToClipboard(qr_url)"
-                  class="mt-2 text-sm text-emerald-600 hover:text-emerald-700"
-                >
-                  Copy URL
-                </button>
-              </div>
-            </div>
-
-            <div v-else class="mb-4">
-              <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
-                <p class="text-red-800 text-sm font-medium">QR Code Expired</p>
-                <p class="text-red-700 text-sm">Generate a new QR code to enable client access</p>
-              </div>
-            </div>
-
-            <form @submit.prevent="generateQr" class="space-y-4">
-              <div>
-                <label class="block text-sm font-medium text-slate-700 mb-2">
-                  Expiration (hours)
-                </label>
-                <select
-                  v-model="qrForm.hours"
-                  class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                >
-                  <option value="24">24 hours</option>
-                  <option value="48">48 hours (recommended)</option>
-                  <option value="72">72 hours</option>
-                  <option value="168">1 week</option>
-                </select>
-              </div>
-              <button
-                type="submit"
-                :disabled="qrProcessing"
-                class="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-              >
-                <span v-if="qrProcessing">Generating...</span>
-                <span v-else>Generate QR Code</span>
-              </button>
-            </form>
-          </div>
 
           <!-- Step Management -->
           <div class="bg-white rounded-lg shadow p-6">
@@ -381,7 +321,6 @@ import AppLayout from '@/layouts/AppLayout.vue'
 import { reactive, ref, onMounted, watch } from 'vue'
 import { router } from '@inertiajs/vue3'
 import admin from '@/routes/admin'
-import QRCode from 'qrcode'
 
 const props = defineProps({
   project: Object,
@@ -397,17 +336,11 @@ const breadcrumbs = [
   { title: props.project.name, href: admin.projects.show.url(props.project.id) }
 ]
 
-const qrProcessing = ref(false)
 const stepProcessing = ref(false)
-const qrCodeDataUrl = ref(null)
 const expandedInterests = ref([])
 const expandedQuestions = ref([])
 const responseForm = reactive({})
 const responseProcessing = reactive({})
-
-const qrForm = reactive({
-  hours: 48
-})
 
 const stepForm = reactive({
   step: props.project.current_step
@@ -449,10 +382,6 @@ const formatFileSize = (bytes) => {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
 }
 
-const isQrExpired = () => {
-  if (!props.project.qr_expires_at) return true
-  return new Date(props.project.qr_expires_at) < new Date()
-}
 
 const getStepStatus = (stepNumber) => {
   if (stepNumber === 1 && props.project.inception_completed_at) {
@@ -476,42 +405,6 @@ const copyToClipboard = async (text) => {
   }
 }
 
-const generateQr = () => {
-  qrProcessing.value = true
-  
-  router.post(admin.projects.generateQr.url(props.project.id), qrForm, {
-    onFinish: () => {
-      qrProcessing.value = false
-    }
-  })
-}
-
-const generateQrCodeImage = async () => {
-  if (props.qr_url && !isQrExpired()) {
-    try {
-      qrCodeDataUrl.value = await QRCode.toDataURL(props.qr_url, {
-        width: 200,
-        margin: 2,
-        color: {
-          dark: '#000000',
-          light: '#ffffff'
-        }
-      })
-    } catch (err) {
-      console.error(err)
-    }
-  } else {
-    qrCodeDataUrl.value = null
-  }
-}
-
-onMounted(() => {
-  generateQrCodeImage()
-})
-
-watch(() => props.qr_url, () => {
-  generateQrCodeImage()
-})
 
 const resetStep = () => {
   stepProcessing.value = true
