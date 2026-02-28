@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Models\ProjectInterest;
+use App\Notifications\CompanyProfileRequestNotification;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Inertia\Inertia;
 
 class ClientAdminController extends Controller
@@ -139,5 +142,22 @@ class ClientAdminController extends Controller
             'qr_urls' => $qrUrls,
         ]);
     }
-}
 
+    public function requestCompanyProfile(Request $request, ProjectInterest $interest)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'contact_person' => 'required|string',
+            'company_name' => 'required|string',
+        ]);
+
+        // Send notification to the client
+        Notification::route('mail', 'rafaelmalakwen@gmail.com')
+            ->notify(new CompanyProfileRequestNotification(
+                $request->company_name,
+                $request->contact_person
+            ));
+
+        return back()->with('success', 'Company profile request sent successfully to ' . $request->email);
+    }
+}

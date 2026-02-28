@@ -84,6 +84,15 @@
                         Our Process
                     </Link>
 
+                    <Link href="/login"
+                        class="inline-block rounded-full border-2 px-6 py-2.5 text-[10px] font-black tracking-widest uppercase transition-all"
+                        :class="isScrolled
+                            ? 'border-slate-300 text-slate-700 hover:border-emerald-600 hover:text-emerald-600'
+                            : 'border-white/30 text-white hover:border-emerald-400 hover:text-emerald-400'
+                            ">
+                        Login
+                    </Link>
+
                     <Link href="/contact"
                         class="inline-block rounded-full bg-emerald-600 px-6 py-2.5 text-[10px] font-black tracking-widest text-white uppercase transition-all hover:shadow-xl hover:shadow-emerald-200">
                         Contact Us
@@ -157,7 +166,11 @@
                     </Link>
                 </div>
 
-                <div class="mt-auto">
+                <div class="mt-auto space-y-4">
+                    <Link href="/login" @click="mobileMenu = false"
+                        class="flex w-full items-center justify-center rounded-2xl border-2 border-slate-300 py-5 text-sm font-black tracking-widest text-slate-700 uppercase hover:border-emerald-600 hover:text-emerald-600 transition-colors">
+                        Login
+                    </Link>
                     <Link href="/contact" @click="mobileMenu = false"
                         class="flex w-full items-center justify-center rounded-2xl bg-emerald-600 py-5 text-sm font-black tracking-widest text-white uppercase shadow-xl shadow-emerald-200">
                         Contact Us

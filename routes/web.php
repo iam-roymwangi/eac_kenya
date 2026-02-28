@@ -68,6 +68,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
         ->name('clients.index');
     Route::get('clients/{interest}', [ClientAdminController::class, 'show'])
         ->name('clients.show');
+    Route::post('clients/{interest}/request-profile', [ClientAdminController::class, 'requestCompanyProfile'])
+        ->name('clients.request-profile');
     
     // Project interests and questions
     Route::get('interests', [ProjectAdminController::class, 'interests'])

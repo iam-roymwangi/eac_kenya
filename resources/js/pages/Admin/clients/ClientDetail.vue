@@ -65,6 +65,24 @@
                 </div>
               </div>
             </dl>
+            
+            <!-- Request Company Profile Button -->
+            <div class="mt-6 pt-6 border-t border-slate-200">
+              <button
+                @click="requestCompanyProfile"
+                :disabled="isRequestingProfile"
+                class="w-full flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white px-4 py-3 rounded-lg font-medium transition-colors"
+              >
+                <svg v-if="!isRequestingProfile" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                </svg>
+                <span v-if="isRequestingProfile">Sending...</span>
+                <span v-else>Request Company Profile</span>
+              </button>
+              <p class="text-xs text-slate-500 mt-2 text-center">
+                Send an email requesting company documentation
+              </p>
+            </div>
           </div>
 
           <!-- Interest timeline -->
@@ -347,6 +365,8 @@ import AppLayout from '@/layouts/AppLayout.vue'
 import admin from '@/routes/admin'
 import QRCode from 'qrcode'
 
+const isRequestingProfile = ref(false)
+
 interface Project {
   id: number
   uuid: string
@@ -548,5 +568,30 @@ watch(() => props.qr_urls, () => {
     generateQrCodeImage(project.id)
   })
 }, { deep: true })
+
+const requestCompanyProfile = () => {
+  if (!client.email || !client.contact_person || !client.name) {
+    alert('Client information is incomplete')
+    return
+  }
+
+  isRequestingProfile.value = true
+
+  router.post(`/admin/clients/${client.id}/request-profile`, {
+    email: client.email,
+    contact_person: client.contact_person,
+    company_name: client.name
+  }, {
+    onFinish: () => {
+      isRequestingProfile.value = false
+    },
+    onSuccess: () => {
+      alert('Company profile request sent successfully!')
+    },
+    onError: () => {
+      alert('Failed to send company profile request')
+    }
+  })
+}
 </script>
 
