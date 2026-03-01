@@ -64,6 +64,11 @@ class Project extends Model
         return $this->belongsTo(Company::class, 'client_company_id');
     }
 
+    public function images()
+    {
+        return $this->hasMany(ProjectImage::class);
+    }
+
     // Removed documents relationship - Document model not yet implemented
 
     public function isStepAccessible(int $step): bool

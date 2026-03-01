@@ -55,7 +55,7 @@ class HomeController extends Controller
 
     public function showProject($id)
     {
-        $project = Project::with('clientCompany')->findOrFail($id);
+        $project = Project::with(['clientCompany', 'images'])->findOrFail($id);
         
         return Inertia::render('ProjectDetail', [
             'project' => $project

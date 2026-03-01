@@ -22,7 +22,20 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
+
+    /**
+     * Get the user's company ID if they are a representative.
+     */
+    public function getCompanyIdAttribute()
+    {
+        $rep = \Illuminate\Support\Facades\DB::table('company_representatives')
+            ->where('user_id', $this->id)
+            ->first();
+            
+        return $rep ? $rep->company_id : null;
+    }
 
     /**
      * The attributes that should be hidden for serialization.

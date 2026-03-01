@@ -13,10 +13,10 @@ return new class extends Migration
             $table->uuid('uuid')->unique();
             
             $table->string('name');
-            $table->text('description')->nullable();
             $table->enum('project_type', ['SOLAR', 'BESS', 'SOLAR_BESS', 'OTHER'])->default('OTHER');
             $table->decimal('capacity_mw', 8, 2)->nullable();
             $table->string('location')->nullable();
+            $table->longText('description')->nullable();
             
             // Onboarding workflow
             $table->integer('current_step')->default(1);

@@ -1,20 +1,49 @@
 <template>
-    <div class="min-h-screen bg-slate-50 font-sans selection:bg-emerald-200 selection:text-emerald-900">
-        <div class="fixed top-0 left-0 z-[110] h-1 bg-emerald-500 transition-all duration-150"
-            :style="{ width: scrollProgress + '%' }"></div>
+    <div
+        class="min-h-screen bg-slate-50 font-sans selection:bg-emerald-200 selection:text-emerald-900"
+    >
+        <div
+            class="fixed top-0 left-0 z-[110] h-1 bg-emerald-500 transition-all duration-150"
+            :style="{ width: scrollProgress + '%' }"
+        ></div>
 
-        <nav class="fixed top-0 z-[100] w-full transition-all duration-500" :class="[
-            isScrolled ? 'bg-white py-3 shadow-sm' : 'bg-transparent py-6',
-        ]">
-            <div class="mx-auto flex max-w-7xl items-center justify-between px-6">
-                <Link href="/" class="flex cursor-pointer items-center gap-3 transition-opacity hover:opacity-80">
-                    <img src="/images/EAC_Logo.svg" alt="EAC Green Group Logo" class="h-10 w-auto" />
+        <nav
+            class="fixed top-0 z-[100] w-full transition-all duration-500"
+            :class="[
+                isScrolled ? 'bg-white py-3 shadow-sm' : 'bg-transparent py-6',
+            ]"
+        >
+            <div
+                class="mx-auto flex max-w-7xl items-center justify-between px-6"
+            >
+                <Link
+                    href="/"
+                    class="flex cursor-pointer items-center gap-3 transition-opacity hover:opacity-80"
+                >
+                    <img
+                        src="/images/EAC_Logo.svg"
+                        alt="EAC Green Group Logo"
+                        class="h-10 w-auto"
+                    />
                 </Link>
 
-                <button @click="mobileMenu = true" class="block lg:hidden"
-                    :class="isScrolled ? 'text-slate-900' : 'text-white'">
-                    <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 8h16M4 16h16" />
+                <button
+                    @click="mobileMenu = true"
+                    class="block lg:hidden"
+                    :class="isScrolled ? 'text-slate-900' : 'text-white'"
+                >
+                    <svg
+                        class="h-8 w-8"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.5"
+                            d="M4 8h16M4 16h16"
+                        />
                     </svg>
                 </button>
 
@@ -22,23 +51,40 @@
                     <div class="group relative">
                         <button
                             class="flex items-center gap-1 text-xs font-bold tracking-widest uppercase transition-colors"
-                            :class="isScrolled
-                                ? 'text-slate-600 hover:text-emerald-600'
-                                : 'text-white/80 hover:text-white'
-                                ">
+                            :class="
+                                isScrolled
+                                    ? 'text-slate-600 hover:text-emerald-600'
+                                    : 'text-white/80 hover:text-white'
+                            "
+                        >
                             Renewable Energy
-                            <svg class="h-3 w-3 transition-transform group-hover:rotate-180" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
-                                <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" />
+                            <svg
+                                class="h-3 w-3 transition-transform group-hover:rotate-180"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    d="M19 9l-7 7-7-7"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
                             </svg>
                         </button>
 
                         <div
-                            class="invisible absolute top-full left-0 w-64 pt-4 opacity-0 transition-all duration-300 group-hover:visible group-hover:opacity-100">
-                            <div class="overflow-hidden rounded-2xl border border-white/10 bg-slate-900 p-4 shadow-2xl">
-                                <a v-for="link in renewableLinks" :key="link" href="/projects"
-                                    class="block border-b border-white/5 px-4 py-3 text-[10px] font-black tracking-[0.15em] text-white/70 uppercase transition-colors last:border-none hover:text-emerald-400">
+                            class="invisible absolute top-full left-0 w-64 pt-4 opacity-0 transition-all duration-300 group-hover:visible group-hover:opacity-100"
+                        >
+                            <div
+                                class="overflow-hidden rounded-2xl border border-white/10 bg-slate-900 p-4 shadow-2xl"
+                            >
+                                <a
+                                    v-for="link in renewableLinks"
+                                    :key="link"
+                                    href="/projects"
+                                    class="block border-b border-white/5 px-4 py-3 text-[10px] font-black tracking-[0.15em] text-white/70 uppercase transition-colors last:border-none hover:text-emerald-400"
+                                >
                                     {{ link }}
                                 </a>
                             </div>
@@ -48,58 +94,86 @@
                     <div class="group relative">
                         <button
                             class="flex items-center gap-1 text-xs font-bold tracking-widest uppercase transition-colors"
-                            :class="isScrolled
-                                ? 'text-slate-600 hover:text-emerald-600'
-                                : 'text-white/80 hover:text-white'
-                                ">
+                            :class="
+                                isScrolled
+                                    ? 'text-slate-600 hover:text-emerald-600'
+                                    : 'text-white/80 hover:text-white'
+                            "
+                        >
                             Water Solutions
-                            <svg class="h-3 w-3 transition-transform group-hover:rotate-180" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
-                                <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" />
+                            <svg
+                                class="h-3 w-3 transition-transform group-hover:rotate-180"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    d="M19 9l-7 7-7-7"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
                             </svg>
                         </button>
                         <div
-                            class="invisible absolute top-full left-0 w-64 pt-4 opacity-0 transition-all duration-300 group-hover:visible group-hover:opacity-100">
-                            <div class="rounded-2xl border border-white/10 bg-slate-900 p-4 shadow-2xl">
-                                <a href="#"
-                                    class="block px-4 py-3 text-[10px] font-black tracking-[0.15em] text-white/70 uppercase hover:text-emerald-400">Infrastructure
-                                    Management</a>
+                            class="invisible absolute top-full left-0 w-64 pt-4 opacity-0 transition-all duration-300 group-hover:visible group-hover:opacity-100"
+                        >
+                            <div
+                                class="rounded-2xl border border-white/10 bg-slate-900 p-4 shadow-2xl"
+                            >
+                                <a
+                                    href="#"
+                                    class="block px-4 py-3 text-[10px] font-black tracking-[0.15em] text-white/70 uppercase hover:text-emerald-400"
+                                    >Infrastructure Management</a
+                                >
                             </div>
                         </div>
                     </div>
 
-                    <Link href="/projects" class="text-xs font-bold tracking-widest uppercase transition-colors" :class="isScrolled
-                        ? 'text-slate-600 hover:text-emerald-600'
-                        : 'text-white/80 hover:text-white'
-                        ">
+                    <Link
+                        href="/projects"
+                        class="text-xs font-bold tracking-widest uppercase transition-colors"
+                        :class="
+                            isScrolled
+                                ? 'text-slate-600 hover:text-emerald-600'
+                                : 'text-white/80 hover:text-white'
+                        "
+                    >
                         Projects
                     </Link>
 
-                    <Link href="/our-process" class="text-xs font-bold tracking-widest uppercase transition-colors"
-                        :class="isScrolled
-                            ? 'text-slate-600 hover:text-emerald-600'
-                            : 'text-white/80 hover:text-white'
-                            ">
+                    <Link
+                        href="/our-process"
+                        class="text-xs font-bold tracking-widest uppercase transition-colors"
+                        :class="
+                            isScrolled
+                                ? 'text-slate-600 hover:text-emerald-600'
+                                : 'text-white/80 hover:text-white'
+                        "
+                    >
                         Our Process
                     </Link>
 
-                    <Link href="/login"
+                    <Link
+                        href="/login"
                         class="inline-block rounded-full border-2 px-6 py-2.5 text-[10px] font-black tracking-widest uppercase transition-all"
-                        :class="isScrolled
-                            ? 'border-slate-300 text-slate-700 hover:border-emerald-600 hover:text-emerald-600'
-                            : 'border-white/30 text-white hover:border-emerald-400 hover:text-emerald-400'
-                            ">
+                        :class="
+                            isScrolled
+                                ? 'border-slate-300 text-slate-700 hover:border-emerald-600 hover:text-emerald-600'
+                                : 'border-white/30 text-white hover:border-emerald-400 hover:text-emerald-400'
+                        "
+                    >
                         Login
                     </Link>
 
-                    <Link href="/contact"
-                        class="inline-block rounded-full bg-emerald-600 px-6 py-2.5 text-[10px] font-black tracking-widest text-white uppercase transition-all hover:shadow-xl hover:shadow-emerald-200">
+                    <Link
+                        href="/contact"
+                        class="inline-block rounded-full bg-emerald-600 px-6 py-2.5 text-[10px] font-black tracking-widest text-white uppercase transition-all hover:shadow-xl hover:shadow-emerald-200"
+                    >
                         Contact Us
                     </Link>
                 </div>
             </div>
-
         </nav>
 
         <slot></slot>
@@ -109,7 +183,11 @@
                 <div class="mb-20 grid grid-cols-1 gap-16 md:grid-cols-12">
                     <div class="space-y-8 md:col-span-5">
                         <div class="flex items-center gap-3">
-                            <img src="/images/EAC_Logo.svg" alt="EAC Green Group Logo" class="h-10 w-auto" />
+                            <img
+                                src="/images/EAC_Logo.svg"
+                                alt="EAC Green Group Logo"
+                                class="h-10 w-auto"
+                            />
                         </div>
                         <p class="max-w-sm font-medium text-slate-500">
                             Providing technical, regulatory, and strategic
@@ -118,16 +196,22 @@
                         </p>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-8 md:col-span-7 md:grid-cols-3">
+                    <div
+                        class="grid grid-cols-2 gap-8 md:col-span-7 md:grid-cols-3"
+                    >
                         <div v-for="(group, title) in footerLinks" :key="title">
-                            <h6 class="mb-6 text-[10px] font-black tracking-[0.3em] text-slate-400 uppercase">
+                            <h6
+                                class="mb-6 text-[10px] font-black tracking-[0.3em] text-slate-400 uppercase"
+                            >
                                 {{ title }}
                             </h6>
                             <ul class="space-y-4">
                                 <li v-for="link in group" :key="link.text">
-                                    <a :href="link.url"
-                                        class="text-sm font-bold text-slate-600 transition-colors hover:text-emerald-600">{{
-                                            link.text }}</a>
+                                    <a
+                                        :href="link.url"
+                                        class="text-sm font-bold text-slate-600 transition-colors hover:text-emerald-600"
+                                        >{{ link.text }}</a
+                                    >
                                 </li>
                             </ul>
                         </div>
@@ -136,43 +220,87 @@
             </div>
         </footer>
     </div>
-    <Transition enter-active-class="transition duration-300 ease-out" enter-from-class="opacity-0"
-        enter-to-class="opacity-100" leave-active-class="transition duration-200 ease-in" leave-from-class="opacity-100"
-        leave-to-class="opacity-0">
-        <div v-if="mobileMenu" class="fixed inset-0 z-[200] bg-slate-900/60 backdrop-blur-xl lg:hidden">
+    <Transition
+        enter-active-class="transition duration-300 ease-out"
+        enter-from-class="opacity-0"
+        enter-to-class="opacity-100"
+        leave-active-class="transition duration-200 ease-in"
+        leave-from-class="opacity-100"
+        leave-to-class="opacity-0"
+    >
+        <div
+            v-if="mobileMenu"
+            class="fixed inset-0 z-[200] bg-slate-900/60 backdrop-blur-xl lg:hidden"
+        >
             <div class="flex h-full flex-col bg-white p-8">
                 <div class="flex items-center justify-between">
-                    <img src="/images/EAC_Logo.svg" alt="Logo" class="h-8 w-auto" />
+                    <img
+                        src="/images/EAC_Logo.svg"
+                        alt="Logo"
+                        class="h-8 w-auto"
+                    />
                     <button @click="mobileMenu = false" class="text-slate-900">
-                        <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                d="M6 18L18 6M6 6l12 12" />
+                        <svg
+                            class="h-8 w-8"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="1.5"
+                                d="M6 18L18 6M6 6l12 12"
+                            />
                         </svg>
                     </button>
                 </div>
 
                 <div class="mt-16 flex flex-col gap-8">
-                    <Link href="/projects" @click="mobileMenu = false"
-                        class="text-2xl font-black tracking-tight text-slate-900 uppercase">Projects</Link>
-                    <Link href="/our-process" @click="mobileMenu = false"
-                        class="text-2xl font-black tracking-tight text-slate-900 uppercase">Our Process</Link>
+                    <Link
+                        href="/projects"
+                        @click="mobileMenu = false"
+                        class="text-2xl font-black tracking-tight text-slate-900 uppercase"
+                        >Projects</Link
+                    >
+                    <Link
+                        href="/our-process"
+                        @click="mobileMenu = false"
+                        class="text-2xl font-black tracking-tight text-slate-900 uppercase"
+                        >Our Process</Link
+                    >
 
                     <div class="h-px w-full bg-slate-100"></div>
 
-                    <p class="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase">Services</p>
-                    <Link v-for="link in renewableLinks" :key="link" href="/projects" @click="mobileMenu = false"
-                        class="text-lg font-bold text-slate-600">
+                    <p
+                        class="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase"
+                    >
+                        Services
+                    </p>
+                    <Link
+                        v-for="link in renewableLinks"
+                        :key="link"
+                        href="/projects"
+                        @click="mobileMenu = false"
+                        class="text-lg font-bold text-slate-600"
+                    >
                         {{ link }}
                     </Link>
                 </div>
 
                 <div class="mt-auto space-y-4">
-                    <Link href="/login" @click="mobileMenu = false"
-                        class="flex w-full items-center justify-center rounded-2xl border-2 border-slate-300 py-5 text-sm font-black tracking-widest text-slate-700 uppercase hover:border-emerald-600 hover:text-emerald-600 transition-colors">
+                    <Link
+                        href="/login"
+                        @click="mobileMenu = false"
+                        class="flex w-full items-center justify-center rounded-2xl border-2 border-slate-300 py-5 text-sm font-black tracking-widest text-slate-700 uppercase transition-colors hover:border-emerald-600 hover:text-emerald-600"
+                    >
                         Login
                     </Link>
-                    <Link href="/contact" @click="mobileMenu = false"
-                        class="flex w-full items-center justify-center rounded-2xl bg-emerald-600 py-5 text-sm font-black tracking-widest text-white uppercase shadow-xl shadow-emerald-200">
+                    <Link
+                        href="/contact"
+                        @click="mobileMenu = false"
+                        class="flex w-full items-center justify-center rounded-2xl bg-emerald-600 py-5 text-sm font-black tracking-widest text-white uppercase shadow-xl shadow-emerald-200"
+                    >
                         Contact Us
                     </Link>
                 </div>
@@ -182,8 +310,8 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch } from 'vue';
 import { Link } from '@inertiajs/vue3';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 
 const isScrolled = ref(false);
 const scrollProgress = ref(0);
@@ -248,8 +376,8 @@ const renewableLinks = [
     'Wind Energy Systems',
     'Geothermal Power Solutions',
     'Advanced Biofuels Technology',
-    'Waste-to-Energy Innovations'
-]
+    'Waste-to-Energy Innovations',
+];
 
 const footerLinks = {
     solutions: [

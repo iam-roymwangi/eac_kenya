@@ -66,6 +66,10 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     // Client management
     Route::get('clients', [ClientAdminController::class, 'index'])
         ->name('clients.index');
+    Route::get('clients/create', [ClientAdminController::class, 'create'])
+        ->name('clients.create');
+    Route::post('clients', [ClientAdminController::class, 'store'])
+        ->name('clients.store');
     Route::get('clients/{interest}', [ClientAdminController::class, 'show'])
         ->name('clients.show');
     Route::post('clients/{interest}/request-profile', [ClientAdminController::class, 'requestCompanyProfile'])

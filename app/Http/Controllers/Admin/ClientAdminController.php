@@ -6,6 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Models\ProjectInterest;
 use App\Notifications\CompanyProfileRequestNotification;
+use App\Models\Company;
+use App\Models\CompanyRepresentative;
+use App\Models\User;
+use App\Mail\ClientCredentialsMail;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use Inertia\Inertia;
@@ -80,6 +87,54 @@ class ClientAdminController extends Controller
         ]);
     }
 
+    public function create()
+    {
+        return Inertia::render('Admin/clients/RegisterClient');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'company_name' => 'required|string|max:255',
+            'contact_person' => 'required|string|max:255',
+            'title' => 'nullable|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email',
+            'phone' => 'required|string|max:50',
+        ]);
+
+        $password = Str::password(12);
+
+        // Create the user
+        $user = User::create([
+            'name' => $request->contact_person,
+            'email' => $request->email,
+            'password' => Hash::make($password),
+            'role' => 'client',
+        ]);
+
+        // Find or create the company
+        $company = Company::firstOrCreate(
+            ['name' => $request->company_name],
+            ['company_type' => 'CLIENT']
+        );
+
+        // Bind the representative
+        CompanyRepresentative::create([
+            'user_id' => $user->id,
+            'company_id' => $company->id,
+            'full_name' => $request->contact_person,
+            'title' => $request->title,
+            'email' => $request->email,
+            'can_sign' => true,
+        ]);
+
+        // Dispatch Email
+        Mail::to($user->email)->send(new ClientCredentialsMail($user, $password));
+
+        return redirect()->route('admin.clients.index')
+            ->with('success', 'Client registered successfully and credentials emailed.');
+    }
+
     public function show(ProjectInterest $interest)
     {
         // Determine this "client" key
@@ -101,6 +156,7 @@ class ClientAdminController extends Controller
             'contact_person' => $interest->contact_person,
             'email' => $email,
             'phone' => $interest->phone,
+            'is_registered' => \App\Models\User::where('email', $email)->exists(),
             'interests_count' => $interests->count(),
             'first_interest_at' => optional($interests->last()?->created_at)?->toIso8601String(),
             'last_interest_at' => optional($interests->first()?->created_at)?->toIso8601String(),

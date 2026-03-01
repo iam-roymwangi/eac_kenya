@@ -251,7 +251,7 @@
                         :key="project.name"
                         v-reveal
                         @click="handleProjectClick(project)"
-                        class="group relative aspect-[16/10] overflow-hidden rounded-[3rem] border border-white/10 cursor-pointer transition-all hover:border-emerald-500 hover:scale-[1.02]"
+                        class="group relative aspect-[16/10] cursor-pointer overflow-hidden rounded-[3rem] border border-white/10 transition-all hover:scale-[1.02] hover:border-emerald-500"
                     >
                         <img
                             :src="project.image"
@@ -278,7 +278,9 @@
                                     >BESS Integrated</span
                                 >
                             </div>
-                            <div class="mt-4 flex items-center gap-2 text-emerald-400 text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div
+                                class="mt-4 flex items-center gap-2 text-sm font-bold text-emerald-400 opacity-0 transition-opacity group-hover:opacity-100"
+                            >
                                 <span>View Details</span>
                                 <span>→</span>
                             </div>
@@ -290,42 +292,65 @@
 
         <section id="sectors" class="relative z-20 bg-slate-50 px-6 py-32">
             <div class="mx-auto max-w-7xl">
-                <div class="mb-20 flex flex-col justify-between gap-8 md:flex-row md:items-end" v-reveal>
+                <div
+                    class="mb-20 flex flex-col justify-between gap-8 md:flex-row md:items-end"
+                    v-reveal
+                >
                     <div class="max-w-2xl">
-                        <h2 class="mb-4 text-[10px] font-black tracking-[0.4em] text-emerald-600 uppercase">
+                        <h2
+                            class="mb-4 text-[10px] font-black tracking-[0.4em] text-emerald-600 uppercase"
+                        >
                             Our Reach
                         </h2>
-                        <h3 class="text-4xl font-black tracking-tighter text-slate-900 md:text-6xl">
+                        <h3
+                            class="text-4xl font-black tracking-tighter text-slate-900 md:text-6xl"
+                        >
                             What Sectors We Cover.
                         </h3>
                     </div>
                     <div class="max-w-xs border-l-2 border-emerald-500 pl-6">
-                        <p class="text-sm font-medium leading-relaxed text-slate-500 uppercase tracking-tight">
-                            Strategic advisory across high-growth industries driving East Africa's development.
+                        <p
+                            class="text-sm leading-relaxed font-medium tracking-tight text-slate-500 uppercase"
+                        >
+                            Strategic advisory across high-growth industries
+                            driving East Africa's development.
                         </p>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <div
+                    class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                >
                     <div
                         v-for="sector in sectorItems"
                         :key="sector.title"
                         v-reveal
-                        class="group relative flex flex-col justify-between overflow-hidden rounded-[2.5rem] bg-white p-8 border border-slate-100 transition-all duration-500 hover:border-emerald-500 hover:shadow-2xl hover:shadow-slate-200"
+                        class="group relative flex flex-col justify-between overflow-hidden rounded-[2.5rem] border border-slate-100 bg-white p-8 transition-all duration-500 hover:border-emerald-500 hover:shadow-2xl hover:shadow-slate-200"
                     >
-                        <div class="absolute -bottom-12 -right-12 h-32 w-32 rounded-full bg-emerald-50 opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:scale-150"></div>
+                        <div
+                            class="absolute -right-12 -bottom-12 h-32 w-32 rounded-full bg-emerald-50 opacity-0 transition-all duration-500 group-hover:scale-150 group-hover:opacity-100"
+                        ></div>
 
                         <div class="relative z-10">
-                            <div class="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-slate-900 text-white transition-colors duration-500 group-hover:bg-emerald-600">
+                            <div
+                                class="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-slate-900 text-white transition-colors duration-500 group-hover:bg-emerald-600"
+                            >
                                 <component :is="sector.icon" class="h-6 w-6" />
                             </div>
-                            <h4 class="mb-2 text-lg font-black leading-tight text-slate-900 uppercase tracking-tighter">
+                            <h4
+                                class="mb-2 text-lg leading-tight font-black tracking-tighter text-slate-900 uppercase"
+                            >
                                 {{ sector.title }}
                             </h4>
                         </div>
 
-                        <div class="relative z-10 mt-4 pt-4 border-t border-slate-50">
-                            <a href="#" class="text-[9px] font-black uppercase tracking-[0.2em] text-emerald-600 flex items-center gap-2">
+                        <div
+                            class="relative z-10 mt-4 border-t border-slate-50 pt-4"
+                        >
+                            <a
+                                href="#"
+                                class="flex items-center gap-2 text-[9px] font-black tracking-[0.2em] text-emerald-600 uppercase"
+                            >
                                 Case Studies <span>→</span>
                             </a>
                         </div>
@@ -333,10 +358,18 @@
                 </div>
 
                 <div class="mt-20 flex justify-center" v-reveal>
-                    <div class="rounded-3xl bg-slate-900 px-8 py-6 text-center shadow-xl">
-                        <p class="text-[10px] font-bold tracking-widest text-slate-400 uppercase">
+                    <div
+                        class="rounded-3xl bg-slate-900 px-8 py-6 text-center shadow-xl"
+                    >
+                        <p
+                            class="text-[10px] font-bold tracking-widest text-slate-400 uppercase"
+                        >
                             Looking for something specific?
-                            <a href="/contact" class="ml-2 text-emerald-400 hover:text-white transition-colors">Speak to our advisors →</a>
+                            <a
+                                href="/contact"
+                                class="ml-2 text-emerald-400 transition-colors hover:text-white"
+                                >Speak to our advisors →</a
+                            >
                         </p>
                     </div>
                 </div>
@@ -421,17 +454,25 @@
                     >
                         Meet the consultation team
                     </h2>
-                    <h3 class="mb-6 text-4xl font-black tracking-tighter text-slate-900 md:text-6xl">
+                    <h3
+                        class="mb-6 text-4xl font-black tracking-tighter text-slate-900 md:text-6xl"
+                    >
                         Join Our Team.
                     </h3>
-                    <p class="text-lg font-medium leading-relaxed text-slate-500">
-                        Explore our diverse case studies showcasing how our consultancy services in
-                        renewable energy, global trade, oil &amp; gas, water solutions, and sustainability
-                        have helped businesses overcome challenges and achieve long-term success.
+                    <p
+                        class="text-lg leading-relaxed font-medium text-slate-500"
+                    >
+                        Explore our diverse case studies showcasing how our
+                        consultancy services in renewable energy, global trade,
+                        oil &amp; gas, water solutions, and sustainability have
+                        helped businesses overcome challenges and achieve
+                        long-term success.
                     </p>
                 </div>
 
-                <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                <div
+                    class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3"
+                >
                     <div
                         v-for="member in consultationTeam"
                         :key="member.name"
@@ -445,17 +486,23 @@
                                 {{ member.initials }}
                             </div>
                             <div class="min-w-0">
-                                <div class="truncate text-lg font-black tracking-tighter text-slate-900">
+                                <div
+                                    class="truncate text-lg font-black tracking-tighter text-slate-900"
+                                >
                                     {{ member.name }}
                                 </div>
-                                <div class="text-[10px] font-black tracking-widest text-emerald-600 uppercase">
+                                <div
+                                    class="text-[10px] font-black tracking-widest text-emerald-600 uppercase"
+                                >
                                     {{ member.role }}
                                 </div>
                             </div>
                         </div>
 
                         <div class="border-t border-slate-100 pt-6">
-                            <p class="text-sm font-medium leading-relaxed text-slate-500">
+                            <p
+                                class="text-sm leading-relaxed font-medium text-slate-500"
+                            >
                                 {{ member.title }}
                             </p>
                         </div>
@@ -477,8 +524,11 @@
                     >
                         Project Inquiry.
                     </h3>
-                    <p class="mx-auto max-w-2xl text-lg font-medium leading-relaxed text-slate-500">
-                        Share a few details and our team will respond within 24 hours.
+                    <p
+                        class="mx-auto max-w-2xl text-lg leading-relaxed font-medium text-slate-500"
+                    >
+                        Share a few details and our team will respond within 24
+                        hours.
                     </p>
                 </div>
 
@@ -489,7 +539,9 @@
                     <form @submit.prevent="submitInquiry" class="space-y-6">
                         <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                             <div class="space-y-2">
-                                <label class="ml-2 text-[10px] font-black tracking-widest text-slate-400 uppercase">
+                                <label
+                                    class="ml-2 text-[10px] font-black tracking-widest text-slate-400 uppercase"
+                                >
                                     Full Name
                                 </label>
                                 <input
@@ -501,7 +553,9 @@
                                 />
                             </div>
                             <div class="space-y-2">
-                                <label class="ml-2 text-[10px] font-black tracking-widest text-slate-400 uppercase">
+                                <label
+                                    class="ml-2 text-[10px] font-black tracking-widest text-slate-400 uppercase"
+                                >
                                     Company Email
                                 </label>
                                 <input
@@ -515,22 +569,32 @@
                         </div>
 
                         <div class="space-y-2">
-                            <label class="ml-2 text-[10px] font-black tracking-widest text-slate-400 uppercase">
+                            <label
+                                class="ml-2 text-[10px] font-black tracking-widest text-slate-400 uppercase"
+                            >
                                 Interest Area
                             </label>
                             <select
                                 v-model="contactForm.interest"
                                 class="w-full rounded-2xl border-none bg-white px-6 py-4 font-medium text-slate-900 transition-all focus:ring-2 focus:ring-emerald-500"
                             >
-                                <option value="solar">Solar Energy Solutions</option>
-                                <option value="bess">Battery Storage (BESS)</option>
-                                <option value="regulatory">Regulatory & Compliance</option>
+                                <option value="solar">
+                                    Solar Energy Solutions
+                                </option>
+                                <option value="bess">
+                                    Battery Storage (BESS)
+                                </option>
+                                <option value="regulatory">
+                                    Regulatory & Compliance
+                                </option>
                                 <option value="water">Water Solutions</option>
                             </select>
                         </div>
 
                         <div class="space-y-2">
-                            <label class="ml-2 text-[10px] font-black tracking-widest text-slate-400 uppercase">
+                            <label
+                                class="ml-2 text-[10px] font-black tracking-widest text-slate-400 uppercase"
+                            >
                                 Message
                             </label>
                             <textarea
@@ -555,34 +619,40 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { router } from '@inertiajs/vue3';
 import HomeLayout from '@/layouts/HomeLayout.vue';
+import { router } from '@inertiajs/vue3';
 import {
     BarChart3,
+    Briefcase,
+    Building2,
+    Coins,
+    Cpu,
     Droplets,
+    Factory,
     Flame,
     Globe,
+    HardHat,
+    HeartPulse,
     Recycle,
+    Sprout,
     Zap,
-    Building2, Factory,
-    Coins, Sprout, Cpu, Briefcase, HeartPulse, HardHat
 } from 'lucide-vue-next';
+import { computed, ref } from 'vue';
 
 interface DbProject {
-    id: number
-    name: string
-    location: string
-    capacity: string
-    bess: boolean
-    image: string
-    isDatabase: boolean
+    id: number;
+    name: string;
+    location: string;
+    capacity: string;
+    bess: boolean;
+    image: string;
+    isDatabase: boolean;
 }
 
 const props = defineProps<{
-    canRegister?: boolean
-    dbProjects?: DbProject[]
-}>()
+    canRegister?: boolean;
+    dbProjects?: DbProject[];
+}>();
 
 const contactForm = ref({
     name: '',
@@ -594,7 +664,9 @@ const contactForm = ref({
 const submitInquiry = () => {
     // Replace with real submission when backend endpoint is ready.
     console.log('Homepage inquiry submitted:', contactForm.value);
-    alert('Thank you for your inquiry. Our technical team will reach out within 24 hours.');
+    alert(
+        'Thank you for your inquiry. Our technical team will reach out within 24 hours.',
+    );
 };
 
 const consultationTeam = [
@@ -694,18 +766,18 @@ const staticProjects = [
 // Merge database projects with static projects
 const projects = computed(() => {
     if (props.dbProjects && props.dbProjects.length > 0) {
-        return props.dbProjects
+        return props.dbProjects;
     }
-    return staticProjects
-})
+    return staticProjects;
+});
 
 const handleProjectClick = (project: any) => {
     if (project.isDatabase && project.id) {
-        router.visit(`/projects/${project.id}`)
+        router.visit(`/projects/${project.id}`);
     } else {
-        router.visit('/projects')
+        router.visit('/projects');
     }
-}
+};
 
 const sectorItems = [
     { title: 'Renewable Energy & Sustainability', icon: Zap },

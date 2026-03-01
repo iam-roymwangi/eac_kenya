@@ -44,17 +44,18 @@ class ProjectAdminController extends Controller
 
     public function create()
     {
-        return Inertia::render('Admin/CreateProject');
+        return Inertia::render('Admin/projects/Create');
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string|max:5000',
+            'description' => 'nullable|string|max:10000',
             'project_type' => 'required|in:SOLAR,BESS,SOLAR_BESS,OTHER',
             'capacity_mw' => 'nullable|numeric|min:0',
             'location' => 'nullable|string|max:255',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
         ]);
 
         $project = Project::create([
@@ -68,13 +69,23 @@ class ProjectAdminController extends Controller
             'qr_expires_at' => now()->addHours(48),
         ]);
 
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $index => $image) {
+                $path = $image->store('projects', 'public');
+                $project->images()->create([
+                    'path' => $path,
+                    'is_primary' => $index === 0,
+                ]);
+            }
+        }
+
         return redirect()->route('admin.projects.show', $project->id)
             ->with('success', 'Project created successfully.');
     }
 
     public function show(Project $project)
     {
-        $project->load('clientCompany');
+        $project->load(['clientCompany', 'images']);
         
         // Generate QR URL
         $qrUrl = null;
